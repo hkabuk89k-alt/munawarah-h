@@ -2,7 +2,7 @@ import { put, list } from '@vercel/blob';
 
 const DB_FILE = 'manora-db.json';
 const DEFAULT_DB = {
-  adminPassword: 'Ss89656H789',
+  adminPassword: '789686358',
   categories: ['أدوية', 'عناية بطفل', 'عناية بالأم', 'تجميل', 'أدوات طبية'],
   categoryImages: {},
   products: [],
