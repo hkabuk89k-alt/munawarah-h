@@ -1,8 +1,9 @@
 const { put, list } = require('@vercel/blob');
 
 const DB_FILE = 'manora-db.json';
+const ADMIN_PASSWORD = '789686358';
+
 const DEFAULT_DB = {
-  adminPassword: '789686358',
   categories: ['أدوية', 'عناية بطفل', 'عناية بالأم', 'تجميل', 'أدوات طبية'],
   categoryImages: {},
   products: [],
@@ -32,11 +33,6 @@ module.exports = async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const db = await getDatabase();
-      const isAdmin = req.query.admin === '1';
-      if (!isAdmin) {
-        const { adminPassword, ...publicDb } = db;
-        return res.status(200).json(publicDb);
-      }
       return res.status(200).json(db);
     }
 
@@ -57,8 +53,7 @@ module.exports = async function handler(req, res) {
       }
 
       if (action === 'saveAdminDB') {
-        const currentDb = await getDatabase();
-        if (payload.authPassword !== currentDb.adminPassword) {
+        if (payload.authPassword !== ADMIN_PASSWORD) {
           return res.status(401).json({ error: 'كلمة المرور غير صحيحة' });
         }
         const { authPassword, ...newDbData } = payload;
