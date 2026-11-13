@@ -1,4 +1,4 @@
-import { put, list } from '@vercel/blob';
+const { put, list } = require('@vercel/blob');
 
 const DB_FILE = 'manora-db.json';
 const DEFAULT_DB = {
@@ -16,7 +16,6 @@ async function getDatabase() {
   if (blobs.length === 0) {
     return { ...DEFAULT_DB };
   }
-  // جلب أحدث نسخة من قاعدة البيانات دون تخزين مؤقت (Cache)
   const latestBlob = blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))[0];
   const response = await fetch(`${latestBlob.url}?t=${Date.now()}`, { cache: 'no-store' });
   if (!response.ok) return { ...DEFAULT_DB };
@@ -24,18 +23,15 @@ async function getDatabase() {
   return { ...DEFAULT_DB, ...data };
 }
 
-export default async function handler(req, res) {
-  // السماح بالطلبات
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    // 1. جلب البيانات (للمتجر ولوحة التحكم)
     if (req.method === 'GET') {
       const db = await getDatabase();
-      // إخفاء كلمة مرور الأدمن عن المتصفح العام للعملاء
       const isAdmin = req.query.admin === '1';
       if (!isAdmin) {
         const { adminPassword, ...publicDb } = db;
@@ -44,11 +40,9 @@ export default async function handler(req, res) {
       return res.status(200).json(db);
     }
 
-    // 2. حفظ البيانات أو رفع صورة
     if (req.method === 'POST') {
       const { action, payload } = req.body;
 
-      // رفع صورة إلى Vercel Blob وإرجاع رابطها
       if (action === 'uploadImage') {
         const { base64, filename } = payload;
         const matches = base64.match(/^data:(.+);base64,(.+)$/);
@@ -62,7 +56,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ url: blob.url });
       }
 
-      // تحديث كامل من لوحة التحكم (بعد التحقق من كلمة المرور)
       if (action === 'saveAdminDB') {
         const currentDb = await getDatabase();
         if (payload.authPassword !== currentDb.adminPassword) {
@@ -77,7 +70,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true });
       }
 
-      // تسجيل عميل جديد من المتجر
       if (action === 'signup') {
         const db = await getDatabase();
         if (db.customers.some(c => c.username === payload.username)) {
@@ -92,7 +84,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true });
       }
 
-      // إرسال طلب جديد من المتجر
       if (action === 'newOrder') {
         const db = await getDatabase();
         db.orders.push(payload);
@@ -110,4 +101,4 @@ export default async function handler(req, res) {
     console.error(error);
     return res.status(500).json({ error: error.message || 'حدث خطأ في السيرفر' });
   }
-}
+};
