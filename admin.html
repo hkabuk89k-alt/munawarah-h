@@ -61,7 +61,6 @@ label{font-size:13px;color:#555;display:block}
       <button data-tab="banners" onclick="adminSection('banners')">صور الإعلان</button>
       <button data-tab="customers" onclick="adminSection('customers')">العملاء</button>
       <button data-tab="orders" onclick="adminSection('orders')">الطلبات</button>
-      <button data-tab="password" onclick="adminSection('password')">كلمة المرور</button>
     </div>
 
     <div id="adminContent"></div>
@@ -69,9 +68,9 @@ label{font-size:13px;color:#555;display:block}
 </div>
 
 <script>
+const ADMIN_PASSWORD = '789686358';
 const statuses = ['تم الطلب','مراجعة','تم التنفيذ','تم إرسال الطلب','تم الاستلام'];
 let db = null;
-let currentAuthPass = sessionStorage.getItem('manoraAdminPass') || '';
 let activeTab = 'products';
 
 function setSync(text, busy = false) {
@@ -84,7 +83,7 @@ function setSync(text, busy = false) {
 }
 
 async function fetchCloudDB() {
-  const res = await fetch('/api/db?admin=1');
+  const res = await fetch('/api/db');
   if (!res.ok) {
     const errText = await res.text();
     throw new Error('خطأ من السيرفر (' + res.status + '): ' + errText.slice(0, 100));
@@ -92,12 +91,11 @@ async function fetchCloudDB() {
   db = await res.json();
 }
 
-async function saveCloudDB(newPassword = null) {
+async function saveCloudDB() {
   setSync('جاري الحفظ في السحابة...', true);
   const payload = {
     ...db,
-    adminPassword: newPassword || db.adminPassword,
-    authPassword: currentAuthPass
+    authPassword: ADMIN_PASSWORD
   };
   const res = await fetch('/api/db', {
     method: 'POST',
@@ -108,11 +106,6 @@ async function saveCloudDB(newPassword = null) {
   if (!res.ok) {
     setSync('فشل الحفظ!', true);
     throw new Error(data.error || 'فشل الحفظ');
-  }
-  if (newPassword) {
-    db.adminPassword = newPassword;
-    currentAuthPass = newPassword;
-    sessionStorage.setItem('manoraAdminPass', newPassword);
   }
   setSync('تم الحفظ في السحابة ✓');
 }
@@ -142,18 +135,15 @@ async function uploadImageToBlob(input) {
 
 async function checkAdmin() {
   const inputPass = document.getElementById('adminPass').value;
-  if (!inputPass) return alert('أدخل كلمة المرور');
+  if (inputPass !== ADMIN_PASSWORD) {
+    return alert('كلمة المرور غير صحيحة');
+  }
   const btn = document.getElementById('loginBtn');
-  btn.disabled = true; btn.textContent = 'جاري التحقق...';
+  btn.disabled = true; btn.textContent = 'جاري التحميل...';
   
   try {
     await fetchCloudDB();
-    if (inputPass !== db.adminPassword) {
-      btn.disabled = false; btn.textContent = 'تسجيل الدخول';
-      return alert('كلمة المرور غير صحيحة');
-    }
-    currentAuthPass = inputPass;
-    sessionStorage.setItem('manoraAdminPass', inputPass);
+    sessionStorage.setItem('manoraAdminAuth', 'true');
     showDashboard();
   } catch (e) {
     alert(e.message);
@@ -175,19 +165,15 @@ async function refreshData() {
 }
 
 function adminLogout() {
-  sessionStorage.removeItem('manoraAdminPass');
+  sessionStorage.removeItem('manoraAdminAuth');
   location.reload();
 }
 
 (async function init() {
-  if (currentAuthPass) {
+  if (sessionStorage.getItem('manoraAdminAuth') === 'true') {
     try {
       await fetchCloudDB();
-      if (currentAuthPass === db.adminPassword) {
-        showDashboard();
-      } else {
-        sessionStorage.removeItem('manoraAdminPass');
-      }
+      showDashboard();
     } catch (e) { console.error(e); }
   }
 })();
@@ -246,40 +232,6 @@ function adminSection(tab) {
   if(tab === 'orders') {
     el.innerHTML = `<h3>الطلبات (${db.orders.length})</h3>` + 
       (db.orders.map(o=>`<div class="admin-list"><b>${esc(o.id)} — ${esc(o.customerName)}</b><p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)} | سند الإيداع: ${esc(o.deposit)}</p><p>${o.items.map(i=>esc(i.name)+' × '+i.qty).join('، ')}</p><div class="row"><span class="status">${esc(o.status)}</span><select id="status-${o.id}">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select><button class="green" onclick="updateOrder('${o.id}')">تحديث الحالة</button></div></div>`).join('') || 'لا توجد طلبات');
-  }
-
-  if(tab === 'password') {
-    el.innerHTML = `
-      <h3>تغيير كلمة مرور لوحة التحكم</h3>
-      <label>كلمة المرور الحالية</label>
-      <input id="oldAdminPass" type="password" placeholder="أدخل كلمة المرور الحالية">
-      <label>كلمة المرور الجديدة</label>
-      <input id="newAdminPass" type="password" placeholder="أدخل كلمة المرور الجديدة">
-      <label>تأكيد كلمة المرور الجديدة</label>
-      <input id="confirmAdminPass" type="password" placeholder="أعد إدخال كلمة المرور الجديدة">
-      <button id="savePassBtn" class="green" onclick="changeAdminPassword()">حفظ كلمة المرور في السحابة</button>
-    `;
-  }
-}
-
-async function changeAdminPassword() {
-  const oldP = document.getElementById('oldAdminPass').value;
-  const newP = document.getElementById('newAdminPass').value.trim();
-  const confP = document.getElementById('confirmAdminPass').value.trim();
-
-  if(oldP !== db.adminPassword) return alert('كلمة المرور الحالية غير صحيحة');
-  if(!newP || newP.length < 4) return alert('يرجى إدخال كلمة مرور جديدة لا تقل عن 4 أحرف');
-  if(newP !== confP) return alert('كلمة المرور الجديدة وتأكيدها غير متطابقين');
-
-  const btn = document.getElementById('savePassBtn');
-  btn.disabled = true; btn.textContent = 'جاري الحفظ...';
-  try {
-    await saveCloudDB(newP);
-    alert('تم تغيير كلمة المرور وحفظها في السحابة بنجاح');
-    adminSection('password');
-  } catch(e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = 'حفظ كلمة المرور في السحابة';
   }
 }
 
