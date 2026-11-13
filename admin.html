@@ -255,9 +255,12 @@ function adminSection(tab) {
 
   if(tab === 'orders') {
     el.innerHTML = `<h3>الطلبات (${db.orders.length})</h3>` + 
-      (db.orders.map(o=>`
+      (db.orders.slice().reverse().map(o=>`
         <div class="admin-list">
-          <b>${esc(o.id)} — ${esc(o.customerName)}</b>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+            <b>${esc(o.id)} — ${esc(o.customerName)}</b>
+            <button class="danger" style="padding:6px 12px;font-size:12px" onclick="deleteOrder(${jsArg(o.id)})">حذف الطلب</button>
+          </div>
           <p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)}</p>
           ${o.deposit && o.deposit.startsWith('http') 
             ? `<div class="receipt-box">
@@ -287,6 +290,18 @@ function adminSection(tab) {
       <input id="confirmAdminPass" type="password" placeholder="أعد إدخال كلمة المرور الجديدة">
       <button id="savePassBtn" class="green" onclick="changeAdminPassword()">حفظ كلمة المرور في السحابة</button>
     `;
+  }
+}
+
+async function deleteOrder(id) {
+  if(!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+  try {
+    db.orders = db.orders.filter(o => o.id !== id);
+    await saveCloudDB();
+    adminSection('orders');
+    alert('تم حذف الطلب بنجاح');
+  } catch(e) {
+    alert(e.message);
   }
 }
 
