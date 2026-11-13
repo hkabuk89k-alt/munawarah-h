@@ -35,6 +35,7 @@ module.exports = async function handler(req, res) {
       const isAdmin = req.query.admin === '1';
       if (!isAdmin) {
         const { adminPassword, ...publicDb } = db;
+        publicDb.customers = (publicDb.customers || []).map(({ password, ...c }) => c);
         return res.status(200).json(publicDb);
       }
       return res.status(200).json(db);
@@ -43,6 +44,7 @@ module.exports = async function handler(req, res) {
     if (req.method === 'POST') {
       const { action, payload } = req.body;
 
+      // رفع صورة (للمنتجات أو سندات الإيداع)
       if (action === 'uploadImage') {
         const { base64, filename } = payload;
         const matches = base64.match(/^data:(.+);base64,(.+)$/);
@@ -56,6 +58,7 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ url: blob.url });
       }
 
+      // حفظ التعديلات من لوحة التحكم
       if (action === 'saveAdminDB') {
         const currentDb = await getDatabase();
         if (payload.authPassword !== currentDb.adminPassword) {
@@ -70,9 +73,10 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true });
       }
 
+      // تسجيل حساب عميل جديد وحفظه في السحابة
       if (action === 'signup') {
         const db = await getDatabase();
-        if (db.customers.some(c => c.username === payload.username)) {
+        if (db.customers.some(c => c.username.toLowerCase() === payload.username.toLowerCase())) {
           return res.status(400).json({ error: 'اسم المستخدم مستخدم مسبقاً' });
         }
         db.customers.push(payload);
@@ -81,9 +85,24 @@ module.exports = async function handler(req, res) {
           addRandomSuffix: false,
           contentType: 'application/json'
         });
-        return res.status(200).json({ success: true });
+        const { password, ...safeCustomer } = payload;
+        return res.status(200).json({ success: true, customer: safeCustomer });
       }
 
+      // تسجيل دخول العميل من أي جهاز
+      if (action === 'login') {
+        const db = await getDatabase();
+        const customer = db.customers.find(
+          c => c.username.toLowerCase() === payload.username.toLowerCase() && c.password === payload.password
+        );
+        if (!customer) {
+          return res.status(401).json({ error: 'اسم المستخدم أو كلمة المرور غير صحيحة (أو تم حذف الحساب)' });
+        }
+        const { password, ...safeCustomer } = customer;
+        return res.status(200).json({ success: true, customer: safeCustomer });
+      }
+
+      // إرسال طلب جديد مع صورة السند
       if (action === 'newOrder') {
         const db = await getDatabase();
         db.orders.push(payload);
