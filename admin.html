@@ -30,6 +30,7 @@ label{font-size:13px;color:#555;display:block}
 .status{display:inline-block;padding:5px 10px;border-radius:20px;background:#eaf4ee;color:#21885b;font-size:12px;font-weight:bold}
 .hidden{display:none!important}
 .sync-badge{font-size:12px;color:#176b50;background:#eaf4ee;padding:4px 10px;border-radius:12px}
+.receipt-box{margin:8px 0;padding:8px;background:#f8fafc;border-radius:10px;border:1px dashed #cbd5e1;display:inline-block}
 </style>
 </head>
 <body>
@@ -240,12 +241,39 @@ function adminSection(tab) {
 
   if(tab === 'customers') {
     el.innerHTML = `<h3>بيانات العملاء (${db.customers.length})</h3>` + 
-      (db.customers.map(c=>`<div class="admin-list"><b>${esc(c.name)}</b><p>جوال: ${esc(c.phone)} · مستخدم: ${esc(c.username)}</p><small>${esc(c.created||'')}</small></div>`).join('') || 'لا يوجد عملاء');
+      (db.customers.map(c=>`
+        <div class="admin-list row">
+          <div style="flex:3">
+            <b>${esc(c.name)}</b>
+            <p style="margin:4px 0">جوال: ${esc(c.phone)} · اسم المستخدم: <b>${esc(c.username)}</b></p>
+            <small style="color:#777">تاريخ التسجيل: ${esc(c.created||'')}</small>
+          </div>
+          <button class="danger" style="flex:0 0 auto" onclick="deleteCustomer(${jsArg(c.username)})">حذف العميل</button>
+        </div>
+      `).join('') || 'لا يوجد عملاء');
   }
 
   if(tab === 'orders') {
     el.innerHTML = `<h3>الطلبات (${db.orders.length})</h3>` + 
-      (db.orders.map(o=>`<div class="admin-list"><b>${esc(o.id)} — ${esc(o.customerName)}</b><p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)} | سند الإيداع: ${esc(o.deposit)}</p><p>${o.items.map(i=>esc(i.name)+' × '+i.qty).join('، ')}</p><div class="row"><span class="status">${esc(o.status)}</span><select id="status-${o.id}">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select><button class="green" onclick="updateOrder('${o.id}')">تحديث الحالة</button></div></div>`).join('') || 'لا توجد طلبات');
+      (db.orders.map(o=>`
+        <div class="admin-list">
+          <b>${esc(o.id)} — ${esc(o.customerName)}</b>
+          <p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)}</p>
+          ${o.deposit && o.deposit.startsWith('http') 
+            ? `<div class="receipt-box">
+                 <div style="font-size:12px;margin-bottom:4px;color:#176b50;font-weight:bold">صورة سند الإيداع (اضغط للتكبير):</div>
+                 <a href="${esc(o.deposit)}" target="_blank"><img src="${esc(o.deposit)}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid #ccc"></a>
+               </div>`
+            : `<p>سند الإيداع: ${esc(o.deposit || 'غير مرفق')}</p>`
+          }
+          <p><b>المنتجات:</b> ${o.items.map(i=>esc(i.name)+' × '+i.qty).join('، ')}</p>
+          <div class="row">
+            <span class="status">${esc(o.status)}</span>
+            <select id="status-${o.id}">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>
+            <button class="green" onclick="updateOrder('${o.id}')">تحديث الحالة</button>
+          </div>
+        </div>
+      `).join('') || 'لا توجد طلبات');
   }
 
   if(tab === 'password') {
@@ -259,6 +287,18 @@ function adminSection(tab) {
       <input id="confirmAdminPass" type="password" placeholder="أعد إدخال كلمة المرور الجديدة">
       <button id="savePassBtn" class="green" onclick="changeAdminPassword()">حفظ كلمة المرور في السحابة</button>
     `;
+  }
+}
+
+async function deleteCustomer(username) {
+  if(!confirm('هل أنت متأكد من حذف حساب هذا العميل نهائياً؟')) return;
+  try {
+    db.customers = db.customers.filter(c => c.username !== username);
+    await saveCloudDB();
+    adminSection('customers');
+    alert('تم حذف العميل من السحابة بنجاح');
+  } catch(e) {
+    alert(e.message);
   }
 }
 
