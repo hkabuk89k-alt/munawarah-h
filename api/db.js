@@ -1,12 +1,22 @@
-const { put, list } = require('@vercel/blob');
+const { put, list, del } = require('@vercel/blob');
 
 const DB_FILE = 'manora-db.json';
 const DEFAULT_DB = {
   adminPassword: '789686358',
   categories: ['أدوية', 'عناية بطفل', 'عناية بالأم', 'تجميل', 'أدوات طبية'],
   categoryImages: {},
+  subcategories: {},
+  bankAccounts: [],
   products: [],
   banners: [],
+  settings: {
+    brand: 'صيدلية المنورة',
+    subBrand: 'صيدليه المنورة للادوية و المستلزمات الطبيه',
+    logo: '',
+    bgColor: '#f3f7fb',
+    address: 'المكلا - الديس - خلف ملعب بارادم',
+    phone: '778358110'
+  },
   customers: [],
   orders: []
 };
@@ -21,6 +31,19 @@ async function getDatabase() {
   if (!response.ok) return { ...DEFAULT_DB };
   const data = await response.json();
   return { ...DEFAULT_DB, ...data };
+}
+
+function getUsedImageUrls(db) {
+  const used = new Set();
+  if (db.settings && db.settings.logo) used.add(db.settings.logo);
+  (db.products || []).forEach(p => { if (p.image) used.add(p.image); });
+  Object.values(db.categoryImages || {}).forEach(url => { if (url) used.add(url); });
+  Object.values(db.subcategories || {}).forEach(list => {
+    (list || []).forEach(s => { if (s.image) used.add(s.image); });
+  });
+  (db.banners || []).forEach(b => { if (b.image) used.add(b.image); });
+  (db.orders || []).forEach(o => { if (o.deposit) used.add(o.deposit); });
+  return used;
 }
 
 module.exports = async function handler(req, res) {
@@ -44,7 +67,7 @@ module.exports = async function handler(req, res) {
     if (req.method === 'POST') {
       const { action, payload } = req.body;
 
-      // رفع صورة (للمنتجات أو سندات الإيداع)
+      // رفع صورة (للمنتجات أو الأقسام أو سندات الإيداع)
       if (action === 'uploadImage') {
         const { base64, filename } = payload;
         const matches = base64.match(/^data:(.+);base64,(.+)$/);
@@ -71,6 +94,21 @@ module.exports = async function handler(req, res) {
           contentType: 'application/json'
         });
         return res.status(200).json({ success: true });
+      }
+
+      // تنظيف الصور غير المستخدمة من مجلد images/
+      if (action === 'cleanupBlobs') {
+        const currentDb = await getDatabase();
+        if (payload.authPassword !== currentDb.adminPassword) {
+          return res.status(401).json({ error: 'غير مصرح' });
+        }
+        const usedUrls = getUsedImageUrls(currentDb);
+        const { blobs } = await list({ prefix: 'images/' });
+        const unusedUrls = blobs.filter(b => !usedUrls.has(b.url)).map(b => b.url);
+        if (unusedUrls.length > 0) {
+          await del(unusedUrls);
+        }
+        return res.status(200).json({ success: true, deletedCount: unusedUrls.length });
       }
 
       // تسجيل حساب عميل جديد وحفظه في السحابة
