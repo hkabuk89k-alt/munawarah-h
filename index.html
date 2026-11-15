@@ -1,204 +1,731 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>صيدلية المنورة</title>
 <style>
-:root{--green:#e7f1f8;--deep:#176b50;--blue:#315c9e;--ink:#243247;--muted:#788797;--paper:#fff;--bg:#f3f7fb}
-*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(145deg,#e8f3fa 0%,#f3f7fb 48%,#e6f1ed 100%);color:var(--ink);min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:10px 14px;background:var(--blue);color:white}button:disabled{opacity:0.6;cursor:not-allowed}button.secondary{background:#edf1fb;color:#304d99}button.danger{background:#d94c4c}button.green{background:var(--deep)}input,textarea,select{width:100%;padding:11px;border:1px solid #dce2e8;border-radius:10px;background:white;margin:5px 0 10px}label{font-size:13px;color:#555;display:block}header{text-align:center;padding:20px 14px 10px;color:#24405d}
-.contact-btn{display:inline-flex;align-items:center;justify-content:center;min-width:112px;padding:9px 18px;border-radius:12px;color:#fff;text-decoration:none;font-weight:bold;box-shadow:0 2px 5px #0002}
-.contact-btn.whatsapp{background:#20a45b}
-.contact-btn.call{background:#345db8}
-h1{font-size:clamp(30px,7vw,56px);margin:0 0 18px;font-weight:800} .search{max-width:700px;margin:auto;background:white;border-radius:22px;padding:9px;display:flex;gap:8px;align-items:center;box-shadow:0 2px 4px #0001}.search input{border:0;margin:0;flex:1}.search button{font-size:20px}.container{max-width:1100px;margin:20px auto;padding:0 14px 110px}.banner{position:relative;background:#fff;border-radius:18px;overflow:hidden;margin:18px 0;height:150px;display:none}.banner img{width:100%;height:100%;object-fit:cover}.banner .dots{position:absolute;bottom:8px;left:0;right:0;text-align:center}.dot{display:inline-block;background:#ffffffa8;width:8px;height:8px;border-radius:50%;margin:0 3px}.dot.active{background:white;width:20px}.section-title{color:#24405d;font-size:22px;margin:18px 4px}.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px;padding:2px 0 12px}.chip{white-space:normal;background:#fff;color:#287c52;border-radius:16px;padding:8px 7px;display:flex;flex-direction:column;align-items:center;gap:6px}.chip img{width:66px;height:60px;object-fit:contain;border-radius:10px}.chip span{font-size:13px;text-align:center}.chip.active{background:#236e4a;color:#fff}.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}.product{background:#fff;border-radius:16px;padding:10px;box-shadow:0 3px 9px #174a2c15}.product img{width:100%;height:130px;object-fit:contain;border-radius:10px;background:#f6f8f7}.product h3{font-size:15px;margin:9px 0 5px}.price{font-weight:bold;color:#238352;margin:8px 0}.product button{width:100%;padding:9px}.empty{color:#65788a;text-align:center;padding:45px 10px}.nav{position:fixed;bottom:14px;left:3.5%;right:3.5%;max-width:850px;margin:auto;background:white;border-radius:28px;display:flex;justify-content:space-around;padding:12px 5px;box-shadow:0 4px 18px #0002;z-index:5}.nav button{background:transparent;color:#777;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 10px;font-size:12px}.nav button .ico{font-size:25px}.nav button.active{color:var(--deep);font-weight:bold}.panel{background:white;border-radius:18px;padding:16px;margin:12px 0}.hidden{display:none!important}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:12px;z-index:10}.modalbox{background:#fff;width:min(520px,100%);max-height:90vh;overflow:auto;border-radius:20px;padding:18px}.modalhead{display:flex;justify-content:space-between;align-items:center}.modalhead h2{margin:0 0 12px}.close{background:#eee;color:#333}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.tabs button{background:#edf1fb;color:#304d99}.admin-list{border:1px solid #e6e8eb;border-radius:12px;padding:10px;margin:8px 0}.admin-list img{width:55px;height:55px;object-fit:cover;border-radius:8px}.status{display:inline-block;padding:5px 9px;border-radius:20px;background:#eaf4ee;color:#21885b;font-size:12px}.stepper{display:flex;justify-content:space-between;gap:3px;margin:12px 0}.stepper span{font-size:11px;text-align:center;flex:1;padding:7px 3px;border-radius:8px;background:#eee;color:#777}.stepper span.done{background:#d8f1e2;color:#147848;font-weight:bold}@media(min-width:650px){.banner{height:210px}.products{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}}
+:root{--bg:#f3f7fb;--navy:#1a2b7c;--deep:#176b50;--white:#fff;--ink:#1e2230}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;overflow-x:hidden}
+.app{min-height:100dvh;padding:0 0 130px;display:flex;flex-direction:column;align-items:center}
+
+/* الهيدر العلوي */
+.topbar{position:sticky;top:0;z-index:15;width:100%;background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 10px #00000018}
+.topbar-center{display:flex;align-items:center;justify-content:center;gap:10px;flex:1;min-width:0}
+.brand-logo{width:38px;height:38px;object-fit:contain;border-radius:10px;background:#fff;padding:3px;flex-shrink:0}
+.topbar h1{margin:0;font-size:clamp(19px,5vw,25px);font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-icon-btn{width:42px;height:42px;border:0;border-radius:12px;background:#ffffff1c;color:#fff;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.top-icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* شريط البحث */
+.search-drawer{width:100%;max-width:720px;padding:10px 16px 0}
+.searchbar{width:100%;background:#fff;border:2px solid #dfe5f0;border-radius:18px;height:56px;display:flex;align-items:center;padding:6px 12px;gap:10px;box-shadow:0 3px 10px #00000008}
+.searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:16px;background:transparent;text-align:right;color:#222}
+.searchbar button{border:0;background:var(--navy);color:#fff;border-radius:12px;height:40px;padding:0 14px;font:inherit;font-weight:bold;cursor:pointer}
+
+#content{width:100%;max-width:720px;flex:1;padding:14px 16px 0}
+
+/* شبكة الأقسام الرئيسية (2 أعمدة) */
+.main-cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.main-cat-card{background:#fff;border-radius:20px;overflow:hidden;border:2px solid transparent;box-shadow:0 4px 14px #18274b0d;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s}
+.main-cat-card.expanded{border-color:var(--navy);box-shadow:0 6px 18px #1a2b7c22}
+.main-cat-media{width:100%;aspect-ratio:1.15/1;background:linear-gradient(135deg,#e8f3fa,#dcebe6);display:grid;place-items:center;overflow:hidden}
+.main-cat-media img{width:100%;height:100%;object-fit:cover;display:block}
+.main-cat-footer{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;background:#fff;font-weight:700;font-size:16px;color:#1e2230}
+.main-cat-footer svg{width:18px;height:18px;stroke:#555;fill:none;stroke-width:2.2;transition:transform .2s}
+.main-cat-card.expanded .main-cat-footer svg{transform:rotate(180deg);stroke:var(--navy)}
+
+/* الأقسام الفرعية المنسدلة (3 أعمدة) */
+.subcat-panel{grid-column:1 / -1;background:#eaf0fa;border-radius:22px;padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.subcat-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 3px 10px #1a2b7c10;cursor:pointer;display:flex;flex-direction:column;text-align:center}
+.subcat-media{width:100%;aspect-ratio:1/1;background:linear-gradient(180deg,#1864ab,#228be6);display:grid;place-items:center;overflow:hidden}
+.subcat-media img{width:100%;height:100%;object-fit:cover;display:block}
+.subcat-title{padding:9px 6px;font-size:13px;font-weight:700;color:#1e2230;line-height:1.35;min-height:48px;display:grid;place-items:center}
+
+/* شريط الأقسام الفرعية الدائري في صفحة المنتجات */
+.sub-pills-bar{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;margin-bottom:8px;scrollbar-width:none}
+.sub-pills-bar::-webkit-scrollbar{display:none}
+.sub-pill{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;max-width:84px;cursor:pointer;text-align:center;border:0;background:transparent;font:inherit;padding:0}
+.sub-pill-circle{width:64px;height:64px;border-radius:50%;background:linear-gradient(180deg,#1864ab,#339af0);padding:3px;display:grid;place-items:center;overflow:hidden;border:3px solid transparent;box-shadow:0 3px 8px #00000014}
+.sub-pill.active .sub-pill-circle{border-color:var(--navy);transform:scale(1.05)}
+.sub-pill-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.sub-pill span{font-size:12px;color:#444;line-height:1.25;font-weight:600}
+.sub-pill.active span{color:var(--navy);font-weight:800}
+
+/* بطاقات المنتجات */
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 12px #18274b0d;border:1px solid #ebeff5;display:flex;flex-direction:column}
+.product-img-wrap{position:relative;width:100%;height:175px;background:#f8fafc;cursor:zoom-in}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.add-circle-btn{position:absolute;bottom:10px;left:10px;width:42px;height:42px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 10px #1a2b7c44;z-index:2}
+.add-circle-btn:active{transform:scale(.92)}
+.product-body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1;justify-content:space-between}
+.product-name{margin:0 0 8px;font-size:14px;font-weight:700;color:#1e2230;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+.product-price{font-size:16px;font-weight:800;color:#1e2230}
+.product-price small{font-size:12px;font-weight:600;color:#666;margin-right:3px}
+.fav-btn{border:0;background:transparent;color:#777;cursor:pointer;padding:4px;display:grid;place-items:center}
+.fav-btn.liked{color:#e03131}
+.fav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
+.fav-btn.liked svg{fill:#e03131}
+
+/* نافذة تكبير صورة المنتج */
+.img-modal{display:none;position:fixed;inset:0;z-index:50;background:#000000cc;padding:20px;align-items:center;justify-content:center}
+.img-modal.open{display:flex}
+.img-modal-card{background:#fff;border-radius:24px;max-width:460px;width:100%;overflow:hidden;box-shadow:0 16px 40px #00000055;animation:fadeIn .2s ease}
+.img-modal-card img{width:100%;max-height:62dvh;object-fit:contain;background:#f8fafc;display:block}
+.img-modal-info{padding:16px 18px;text-align:center}
+.img-modal-info h3{margin:0 0 6px;font-size:18px;color:#1e2230}
+.img-modal-info p{margin:0 0 14px;font-size:18px;font-weight:800;color:var(--navy)}
+.img-modal-actions{display:flex;gap:10px}
+.img-modal-actions button{flex:1;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:bold;cursor:pointer}
+
+/* الحسابات البنكية في تبويب العنوان */
+.bank-section{margin:18px 0 22px}
+.bank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.bank-card{background:#fff;border:1px solid #dce4f2;border-right:5px solid var(--navy);border-radius:16px;padding:13px 15px;box-shadow:0 3px 10px #18274b08;display:flex;flex-direction:column;gap:5px}
+.bank-title{font-weight:800;font-size:15px;color:var(--navy)}
+.bank-holder{font-size:13px;color:#555}
+.bank-num-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f4f7fc;padding:7px 10px;border-radius:10px;margin-top:4px}
+.bank-num{font-weight:800;font-size:15px;color:#1e2230;letter-spacing:.5px}
+.copy-btn{border:0;background:var(--navy);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:bold;cursor:pointer}
+
+/* شريط التنقل السفلي */
+.bottomnav{position:fixed;z-index:14;bottom:14px;left:2.5%;width:95%;max-width:740px;background:#fff;border:2px solid #dfe5f2;border-radius:36px;height:78px;display:flex;align-items:center;justify-content:space-around;padding:6px 8px;box-shadow:0 8px 24px #18274b1a}
+.navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;flex:1;color:#7c8496;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:12px;font-weight:600}
+.navitem svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.navitem.active{color:var(--navy);font-weight:800}
+.cartdot{position:absolute;top:0;right:32%;width:12px;height:12px;background:#e84949;border-radius:50%;border:2px solid #fff}
+
+/* عناصر السلة والحساب والعنوان */
+.section-title{color:var(--navy);font-weight:800;font-size:19px;margin:0 0 12px}
+.panel{background:#fff;border-radius:20px;padding:18px;margin:12px auto;width:100%;box-shadow:0 3px 10px #00000008}
+.panel h2,.panel h3{margin:0 0 12px;color:var(--navy)}
+.panel button{border:0;border-radius:12px;padding:11px 16px;margin:4px;background:var(--navy);color:#fff;font:inherit;font-weight:bold;cursor:pointer}
+.contact-link{display:inline-flex;align-items:center;justify-content:center;min-width:115px;padding:10px 18px;border-radius:12px;color:#fff;text-decoration:none;font-weight:bold;margin:4px}
+.contact-link.whatsapp{background:#20a45b}
+.contact-link.call{background:#345db8}
+.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px #0000000a}
+.accountform input,.checkoutform input,.checkoutform textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #d8dee9;border-radius:12px;font:inherit}
+.accountform button,.checkoutform button{background:var(--navy);color:#fff;border:0;border-radius:12px;padding:12px 16px;margin:5px;font:inherit;font-weight:bold;cursor:pointer}
+.total-summary-box{background:#eef4ff;border:2px solid #c5d6f5;border-radius:18px;padding:14px 18px;margin:14px 0;display:flex;align-items:center;justify-content:space-between;font-size:18px;font-weight:800;color:var(--navy)}
+.cart-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.cart-actions button{flex:1;min-width:130px;border:0;border-radius:14px;padding:13px 12px;font:inherit;font-weight:bold;cursor:pointer}
+.btn-buy{background:#18865a!important;color:#fff!important}
+.btn-secondary{background:#eef2fb!important;color:var(--navy)!important;border:1px solid #d0dcf2!important}
+.ordercard{background:#fff;border-radius:16px;padding:14px;margin:12px 0;border:1px solid #e6e8eb}
+.stepper{display:flex;justify-content:space-between;gap:4px;margin:12px 0}
+.stepper span{font-size:11px;text-align:center;flex:1;padding:7px 4px;border-radius:8px;background:#eee;color:#777}
+.stepper span.done{background:#d8f1e2;color:#147848;font-weight:bold}
+.banner-carousel{width:100%;max-width:460px;margin:0 auto 16px;position:relative;overflow:hidden;border-radius:22px;background:#fff;box-shadow:0 6px 18px #18274b14;aspect-ratio:16/9}
+.banner-carousel .banner-slide{position:absolute;inset:0;opacity:0;animation:bannerFade 16s infinite}
+.banner-carousel .banner-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-carousel .banner-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#101d54b8);color:#fff;padding:14px 12px 10px;font-weight:bold;font-size:14px}
+@keyframes bannerFade{0%,22%{opacity:1}25%,97%{opacity:0}100%{opacity:1}}
 </style>
 </head>
 <body>
-<header>
-<h1>صيدلية المنورة</h1>
-<div class="search"><button class="secondary" id="filterBtn" title="الأقسام">☷</button><input id="searchInput" placeholder="بحث عن منتج"><button id="searchBtn">⌕</button></div>
-</header>
-<main class="container">
-<div id="banner" class="banner"><img id="bannerImg" alt="إعلان"><div class="dots" id="bannerDots"></div></div>
-<div id="homeView"><h2 class="section-title">الرئيسية</h2><div id="homeProducts" class="products"></div><div id="homeEmpty" class="empty">جاري تحميل المنتجات...</div></div>
-<div id="categoriesView" class="hidden"><h2 class="section-title">الأقسام</h2><div id="categoryChips" class="chips"></div><div id="categoryProducts" class="products"></div><div id="categoryEmpty" class="empty hidden">لا توجد منتجات في هذا القسم</div></div>
-<div id="addressView" class="hidden"><h2 class="section-title">العنوان</h2><div class="panel" style="text-align:center;line-height:2.1">
-<h3>صيدليه المنورة للادوية و المستلزمات الطبيه</h3>
-<p>🏥 المكلا - الديس - خلف ملعب بارادم</p>
-<p>📱 778358110</p>
-<div class="row" style="max-width:420px;margin:auto">
-<a class="contact-btn whatsapp" href="https://wa.me/967778358110" target="_blank" rel="noopener">واتساب</a>
-<a class="contact-btn call" href="tel:+967778358110">اتصال</a>
-</div></div></div>
-<div id="cartView" class="hidden"><h2 class="section-title">السلة</h2><div class="panel" id="cartContent"></div></div>
-<div id="accountView" class="hidden"><h2 class="section-title">حسابي</h2><div class="panel" id="accountContent"></div></div>
-<div id="ordersView" class="hidden">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin:18px 4px">
-    <h2 class="section-title" style="margin:0">طلباتي</h2>
-    <button id="refreshOrdersBtn" class="secondary" onclick="manualRefreshOrders()">تحديث الطلبات ↻</button>
-  </div>
-  <div class="panel" id="ordersContent"></div>
-</div>
-</main>
-<nav class="nav">
-<button data-view="addressView"><span class="ico">🏥</span>العنوان</button><button data-view="categoriesView"><span class="ico">▦</span>أقسام</button><button data-view="homeView" class="active"><span class="ico">⌂</span>الرئيسية</button><button data-view="cartView"><span class="ico">🛒</span>السلة <span id="cartCount"></span></button><button data-view="accountView"><span class="ico">♙</span>حسابي</button>
-</nav>
-<div id="modal" class="modal hidden"><div class="modalbox"><div class="modalhead"><h2 id="modalTitle"></h2><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
-<script>
-const defaultCategories=['أدوية','عناية بطفل','عناية بالأم','تجميل','أدوات طبية'];
-let db={categories:[...defaultCategories],categoryImages:{},products:[],banners:[],customers:[],orders:[]};
+<div class="app">
+  <header class="topbar">
+    <button class="top-icon-btn" id="backTopBtn" style="visibility:hidden" aria-label="رجوع" onclick="handleTopBack()">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <div class="topbar-center">
+      <img id="brandLogo" class="brand-logo" src="" alt="الشعار" style="display:none">
+      <h1 id="topbarTitle">صيدلية المنورة</h1>
+    </div>
+    <button class="top-icon-btn" aria-label="بحث" onclick="toggleSearchBox()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+    </button>
+  </header>
 
-function categoryArt(name){
- const shapes={
- 'أدوية':'<rect x="28" y="28" width="64" height="24" rx="12" fill="#e85d75" transform="rotate(-35 60 40)"/><path d="M50 26l22 30" stroke="#fff" stroke-width="5" transform="rotate(-35 60 40)"/>',
- 'عناية بطفل':'<circle cx="60" cy="43" r="25" fill="#ffd7b5"/><path d="M35 40Q35 10 60 15Q85 10 85 40" fill="#7c5a43"/><circle cx="51" cy="44" r="3"/><circle cx="69" cy="44" r="3"/><path d="M52 55q8 7 16 0" fill="none" stroke="#d77" stroke-width="3"/>',
- 'عناية بالأم':'<circle cx="60" cy="34" r="19" fill="#ffd7b5"/><path d="M40 34Q38 10 60 12Q82 10 80 34" fill="#6b4b3e"/><path d="M28 92Q30 55 60 53Q90 55 92 92" fill="#e99bb7"/>',
- 'تجميل':'<rect x="48" y="22" width="24" height="52" rx="5" fill="#e85d8a"/><rect x="52" y="12" width="16" height="15" rx="3" fill="#b33b67"/><rect x="42" y="73" width="36" height="12" rx="4" fill="#d9a4b7"/>',
- 'أدوات طبية':'<path d="M50 18h20v27h27v20H70v27H50V65H23V45H50z" fill="#fff" stroke="#4c9ed9" stroke-width="3"/>'
- };
- let bg={'أدوية':'#fff0f2','عناية بطفل':'#fff4df','عناية بالأم':'#fceaf3','تجميل':'#fbeaf1','أدوات طبية':'#eaf5ff'}[name]||'#eff7f1';
- return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="110" viewBox="0 0 120 110"><rect width="120" height="110" rx="16" fill="${bg}"/>${shapes[name]||'<circle cx="60" cy="55" r="28" fill="#5ca675"/>'}</svg>`)
+  <div class="search-drawer" id="searchDrawer" style="display:none">
+    <div class="searchbar">
+      <input id="searchInput" placeholder="ابحث عن اسم المنتج..." oninput="onSearchInput()">
+      <button onclick="clearSearch()">إغلاق</button>
+    </div>
+  </div>
+
+  <main id="content"><div class="panel">جاري تحميل بيانات المتجر...</div></main>
+</div>
+
+<!-- نافذة تكبير صورة المنتج -->
+<div class="img-modal" id="imgModal" onclick="if(event.target===this)closeImageModal()">
+  <div class="img-modal-card">
+    <img id="modalProductImg" src="" alt="">
+    <div class="img-modal-info">
+      <h3 id="modalProductName"></h3>
+      <p id="modalProductPrice"></p>
+      <div class="img-modal-actions">
+        <button class="btn-buy" id="modalAddCartBtn">+ شراء / أضف للسلة</button>
+        <button class="btn-secondary" onclick="closeImageModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="bottomnav" aria-label="التنقل">
+  <button class="navitem" onclick="setTab('address',this)">
+    <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>العنوان</span>
+  </button>
+  <button class="navitem" onclick="setTab('sections',this)">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>أقسام</span>
+  </button>
+  <button class="navitem active" onclick="setTab('home',this)">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"/></svg><span>الرئيسية</span>
+  </button>
+  <button class="navitem" onclick="setTab('cart',this)">
+    <span class="cartdot" id="cartdot" style="display:none"></span>
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.4 11.2a1 1 0 0 0 1 .8h9.8a1 1 0 0 0 1-.8L21 7H6"/></svg><span>السلة</span>
+  </button>
+  <button class="navitem" onclick="setTab('account',this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>حسابي</span>
+  </button>
+</nav>
+
+<script>
+const defaultCategories = ['أدوية','عناية بطفل','عناية بالأم','تجميل','أدوات طبية'];
+const statuses = ['تم الطلب','مراجعة','تم التنفيذ','تم إرسال الطلب','تم الاستلام'];
+let db = {
+  categories: [...defaultCategories],
+  categoryImages: {},
+  subcategories: {},
+  bankAccounts: [],
+  products: [],
+  banners: [],
+  customers: [],
+  orders: [],
+  settings: {
+    brand: 'صيدلية المنورة',
+    subBrand: 'صيدليه المنورة للادوية و المستلزمات الطبيه',
+    logo: '',
+    bgColor: '#f3f7fb',
+    address: 'المكلا - الديس - خلف ملعب بارادم',
+    phone: '778358110'
+  }
+};
+
+function categoryArt(name) {
+  const shapes = {
+    'أدوية':'<rect x="28" y="28" width="64" height="24" rx="12" fill="#e85d75" transform="rotate(-35 60 40)"/><path d="M50 26l22 30" stroke="#fff" stroke-width="5" transform="rotate(-35 60 40)"/>',
+    'عناية بطفل':'<circle cx="60" cy="43" r="25" fill="#ffd7b5"/><path d="M35 40Q35 10 60 15Q85 10 85 40" fill="#7c5a43"/><circle cx="51" cy="44" r="3"/><circle cx="69" cy="44" r="3"/><path d="M52 55q8 7 16 0" fill="none" stroke="#d77" stroke-width="3"/>',
+    'عناية بالأم':'<circle cx="60" cy="34" r="19" fill="#ffd7b5"/><path d="M40 34Q38 10 60 12Q82 10 80 34" fill="#6b4b3e"/><path d="M28 92Q30 55 60 53Q90 55 92 92" fill="#e99bb7"/>',
+    'تجميل':'<rect x="48" y="22" width="24" height="52" rx="5" fill="#e85d8a"/><rect x="52" y="12" width="16" height="15" rx="3" fill="#b33b67"/><rect x="42" y="73" width="36" height="12" rx="4" fill="#d9a4b7"/>',
+    'أدوات طبية':'<path d="M50 18h20v27h27v20H70v27H50V65H23V45H50z" fill="#fff" stroke="#4c9ed9" stroke-width="3"/>'
+  };
+  let bg = {'أدوية':'#fff0f2','عناية بطفل':'#fff4df','عناية بالأم':'#fceaf3','تجميل':'#fbeaf1','أدوات طبية':'#eaf5ff'}[name] || '#eff7f1';
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="110" viewBox="0 0 120 110"><rect width="120" height="110" rx="16" fill="${bg}"/>${shapes[name] || '<circle cx="60" cy="55" r="28" fill="#5ca675"/>'}</svg>`);
 }
 
-let user=JSON.parse(localStorage.getItem('manoraUser')||'null'),cart=JSON.parse(localStorage.getItem('manoraCart')||'[]'),view='homeView',selectedCategory=defaultCategories[0],bannerIndex=0,ordersTimer=null;
+let user = JSON.parse(localStorage.getItem('manoraUser') || 'null');
+let cart = JSON.parse(localStorage.getItem('manoraCart') || '[]');
+let favorites = JSON.parse(localStorage.getItem('manoraFavs') || '[]');
+let currentTab = 'home';
+let expandedMainCat = '';
+let activeMainCat = '';
+let activeSubCat = '';
+let showCheckoutBox = false;
+let ordersTimer = null;
 
-async function loadCloudDB() {
+function esc(s = '') { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function imageSrc(src) { return src || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180"><rect width="100%" height="100%" fill="#f0f5f1"/><text x="50%" y="50%" text-anchor="middle" fill="#8a9a8e" font-size="28">💊</text></svg>'); }
+
+function normalizeSearch(value) {
+  return String(value || '').toLowerCase()
+    .normalize('NFD').replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function applyAppearance() {
+  const s = db.settings || {};
+  document.documentElement.style.setProperty('--bg', s.bgColor || '#f3f7fb');
+  document.title = s.brand || 'صيدلية المنورة';
+  updateTopbar();
+}
+
+function updateTopbar() {
+  const s = db.settings || {};
+  const titleEl = document.getElementById('topbarTitle');
+  const logoEl = document.getElementById('brandLogo');
+  const backBtn = document.getElementById('backTopBtn');
+
+  if (currentTab === 'products') {
+    titleEl.textContent = activeSubCat || activeMainCat;
+    logoEl.style.display = 'none';
+    backBtn.style.visibility = 'visible';
+  } else if (currentTab === 'sections') {
+    titleEl.textContent = 'الأقسام';
+    logoEl.style.display = 'none';
+    backBtn.style.visibility = 'hidden';
+  } else {
+    titleEl.textContent = s.brand || 'صيدلية المنورة';
+    backBtn.style.visibility = 'hidden';
+    if (s.logo) { logoEl.src = s.logo; logoEl.style.display = 'block'; }
+    else { logoEl.style.display = 'none'; }
+  }
+}
+
+function handleTopBack() {
+  if (currentTab === 'products') {
+    currentTab = 'sections';
+    updateTopbar();
+    renderContent();
+  }
+}
+
+function toggleSearchBox() {
+  const drawer = document.getElementById('searchDrawer');
+  const isHidden = drawer.style.display === 'none';
+  drawer.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) document.getElementById('searchInput').focus();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchDrawer').style.display = 'none';
+  renderContent();
+}
+
+function onSearchInput() { renderContent(); }
+
+async function loadCloudDB(notify = false) {
   try {
     const res = await fetch('/api/db');
     if (res.ok) {
       const data = await res.json();
-      db = { ...db, ...data };
+      db = {
+        ...db,
+        ...data,
+        subcategories: data.subcategories || {},
+        bankAccounts: data.bankAccounts || [],
+        settings: { ...db.settings, ...(data.settings || {}) }
+      };
       defaultCategories.forEach(c => {
         if (!db.categories.includes(c)) db.categories.push(c);
         if (!db.categoryImages[c]) db.categoryImages[c] = categoryArt(c);
       });
-      if (!db.categories.includes(selectedCategory)) selectedCategory = db.categories[0] || '';
       if (user && !db.customers.some(c => c.username === user.username)) {
         user = null;
         localStorage.removeItem('manoraUser');
       }
+      applyAppearance();
     }
   } catch (e) {
     console.error('فشل جلب البيانات:', e);
   }
-  document.getElementById('homeEmpty').textContent = 'ستظهر هنا المنتجات التي يحددها المسؤول للرئيسية';
-  render();
+  updateCartDot();
+  renderContent();
+  if (notify) alert('تم تحديث البيانات بنجاح');
 }
 
-function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function jsArg(s){return JSON.stringify(String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
-function selectCategory(c){selectedCategory=c;renderProducts()}
-function imageSrc(src){return src||'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180"><rect width="100%" height="100%" fill="#f0f5f1"/><text x="50%" y="50%" text-anchor="middle" fill="#8a9a8e" font-size="18">صورة المنتج</text></svg>')}
+function updateCartDot() {
+  const totalQty = cart.reduce((a, x) => a + x.qty, 0);
+  document.getElementById('cartdot').style.display = totalQty > 0 ? 'block' : 'none';
+}
 
-async function showView(v){
-  view=v;
-  ['homeView','categoriesView','addressView','cartView','accountView','ordersView'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==v));
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  if (ordersTimer) { clearInterval(ordersTimer); ordersTimer = null; }
-  if (v === 'ordersView') {
-    await loadCloudDB();
-    ordersTimer = setInterval(() => { if (view === 'ordersView') loadCloudDB(); }, 10000);
+function openImageModal(id) {
+  const p = db.products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalProductImg').src = imageSrc(p.image);
+  document.getElementById('modalProductName').textContent = p.name + (p.desc ? ' - ' + p.desc : '');
+  document.getElementById('modalProductPrice').textContent = Number(p.price || 0).toLocaleString() + ' ريال';
+  document.getElementById('modalAddCartBtn').onclick = () => { closeImageModal(); addToCart(p.id); };
+  document.getElementById('imgModal').classList.add('open');
+}
+
+function closeImageModal() { document.getElementById('imgModal').classList.remove('open'); }
+
+function toggleFav(id) {
+  if (favorites.includes(id)) favorites = favorites.filter(x => x !== id);
+  else favorites.push(id);
+  localStorage.setItem('manoraFavs', JSON.stringify(favorites));
+  renderContent();
+}
+
+function copyAccountNumber(num, btn) {
+  navigator.clipboard.writeText(num).then(() => {
+    const old = btn.textContent;
+    btn.textContent = 'تم النسخ ✓';
+    setTimeout(() => btn.textContent = old, 1500);
+  }).catch(() => alert('رقم الحساب: ' + num));
+}
+
+function productCard(p) {
+  const isFav = favorites.includes(p.id);
+  const label = p.desc ? (p.name + ' - ' + p.desc) : p.name;
+  return `<article class="product">
+    <div class="product-img-wrap" onclick="openImageModal('${p.id}')">
+      <img src="${imageSrc(p.image)}" alt="${esc(p.name)}">
+      <button type="button" class="add-circle-btn" aria-label="إضافة للسلة" onclick="event.stopPropagation();addToCart('${p.id}')">+</button>
+    </div>
+    <div class="product-body">
+      <h3 class="product-name">${esc(label)}</h3>
+      <div class="product-bottom">
+        <span class="product-price">${Number(p.price || 0).toLocaleString()} <small>ريال</small></span>
+        <button type="button" class="fav-btn ${isFav ? 'liked' : ''}" onclick="toggleFav('${p.id}')"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.6C.8 9 2.7 5 6.5 5c2.2 0 4.1 1.2 5.5 3 1.4-1.8 3.3-3 5.5-3 3.8 0 5.7 4 3.8 7.4C19 16.6 12 21 12 21Z"/></svg></button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function addToCart(id) {
+  const p = db.products.find(x => x.id === id);
+  if (!p) return;
+  const item = cart.find(x => x.id === id);
+  if (item) item.qty++;
+  else cart.push({ id, qty: 1 });
+  localStorage.setItem('manoraCart', JSON.stringify(cart));
+  updateCartDot();
+  showCheckoutBox = false;
+  setTab('cart', document.querySelectorAll('.navitem')[3]);
+}
+
+function removeCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  localStorage.setItem('manoraCart', JSON.stringify(cart));
+  updateCartDot();
+  if (!cart.length) showCheckoutBox = false;
+  renderContent();
+}
+
+function startCheckout() {
+  showCheckoutBox = true;
+  renderContent();
+  setTimeout(() => {
+    const box = document.getElementById('cartCheckoutSection');
+    if (box) box.scrollIntoView({ behavior: 'smooth' });
+  }, 50);
+}
+
+function continueShopping() {
+  showCheckoutBox = false;
+  setTab('sections', document.querySelectorAll('.navitem')[1]);
+}
+
+function onMainCategoryClick(index) {
+  const cat = db.categories[index];
+  if (!cat) return;
+  const subs = db.subcategories[cat] || [];
+  if (subs.length > 0) {
+    expandedMainCat = (expandedMainCat === cat) ? '' : cat;
+    renderContent();
   } else {
-    render();
+    activeMainCat = cat;
+    activeSubCat = '';
+    currentTab = 'products';
+    updateTopbar();
+    renderContent();
   }
-  window.scrollTo(0,0);
 }
 
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
-document.getElementById('filterBtn').onclick=()=>showView('categoriesView');
-document.getElementById('searchBtn').onclick=()=>{renderProducts();showView('categoriesView')};
-document.getElementById('searchInput').oninput=()=>{renderProducts();showView('categoriesView')};
-
-function renderProducts(){
-  const q=document.getElementById('searchInput').value.trim().toLowerCase();
-  let list=db.products.filter(p=>p.name.toLowerCase().includes(q));
-  const home=list.filter(p=>p.home);
-  document.getElementById('homeProducts').innerHTML=home.map(productCard).join('');
-  document.getElementById('homeEmpty').classList.toggle('hidden',home.length>0);
-  document.getElementById('categoryChips').innerHTML=db.categories.map(c=>`<button class="chip ${c===selectedCategory?'active':''}" onclick="selectCategory(${jsArg(c)})"><img src="${imageSrc(db.categoryImages[c]||categoryArt(c))}" alt=""><span>${esc(c)}</span></button>`).join('');
-  let cp=q?list:list.filter(p=>p.category===selectedCategory);
-  document.getElementById('categoryProducts').innerHTML=cp.map(productCard).join('');
-  document.getElementById('categoryEmpty').classList.toggle('hidden',cp.length>0);
-  document.getElementById('categoryEmpty').textContent=q?'لا توجد منتجات تطابق البحث':'لا توجد منتجات في هذا القسم';
+function openSubcategory(mainCat, subIndex) {
+  const subs = db.subcategories[mainCat] || [];
+  const sub = subs[subIndex];
+  activeMainCat = mainCat;
+  activeSubCat = sub ? sub.name : '';
+  currentTab = 'products';
+  updateTopbar();
+  renderContent();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function productCard(p){return `<article class="product"><img src="${imageSrc(p.image)}" alt="${esc(p.name)}"><h3>${esc(p.name)}</h3><div class="price">${esc(p.price)} ريال</div><button onclick="addToCart('${p.id}')">＋ شراء</button></article>`}
-function addToCart(id){if(!user){openModal('تسجيل الدخول مطلوب',authMarkup());authMode('login');return}let p=db.products.find(x=>x.id===id);if(p){let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});localStorage.setItem('manoraCart',JSON.stringify(cart));renderCart();alert('تمت إضافة المنتج إلى السلة')}}
-function renderCart(){document.getElementById('cartCount').textContent=cart.reduce((a,x)=>a+x.qty,0)||'';let el=document.getElementById('cartContent');if(!cart.length){el.innerHTML='<p>السلة فارغة حالياً</p>';return}el.innerHTML=cart.map(it=>{let p=db.products.find(x=>x.id===it.id);return p?`<div class="admin-list row"><img src="${imageSrc(p.image)}"><div><b>${esc(p.name)}</b><p>${esc(p.price)} ريال × ${it.qty}</p></div><button class="danger" onclick="removeCart('${p.id}')">حذف</button></div>`:''}).join('')+`<button class="green" onclick="checkout()">شراء المنتجات</button>`}
-function removeCart(id){cart=cart.filter(x=>x.id!==id);localStorage.setItem('manoraCart',JSON.stringify(cart));renderCart()}
-function authMarkup(){return `<div class="tabs"><button onclick="authMode('login')">دخول</button><button onclick="authMode('signup')">إنشاء حساب جديد</button></div><div id="authForm"></div>`}
-function authMode(mode){let f=document.getElementById('authForm');if(!f)return;if(mode==='login')f.innerHTML=`<label>اسم المستخدم</label><input id="loginUser"><label>كلمة المرور</label><input id="loginPass" type="password"><button id="loginBtn" class="green" onclick="login()">دخول</button>`;else f.innerHTML=`<label>اسم العميل</label><input id="custName"><label>رقم جواله</label><input id="custPhone" type="tel"><label>اسم المستخدم</label><input id="newUser"><label>كلمة المرور</label><input id="newPass" type="password"><button id="signupBtn" class="green" onclick="signup()">حفظ</button>`}
 
-async function login(){
-  let u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value;
-  if(!u||!p)return alert('أدخل اسم المستخدم وكلمة المرور');
-  let btn=document.getElementById('loginBtn');if(btn){btn.disabled=true;btn.textContent='جاري الدخول...';}
+function renderBannersHtml() {
+  if (!db.banners || !db.banners.length) return '';
+  const list = db.banners.slice(0, 4);
+  const totalSec = Math.max(4, list.length * 4);
+  return '<section class="banner-carousel">' + list.map((b, i) =>
+    `<div class="banner-slide" style="animation-duration:${totalSec}s;animation-delay:${i * 4}s">
+      <img src="${imageSrc(b.image)}" alt="إعلان">
+      ${b.title ? `<div class="banner-caption">${esc(b.title)}</div>` : ''}
+    </div>`
+  ).join('') + '</section>';
+}
+
+function renderBanksHtml() {
+  if (!db.bankAccounts || !db.bankAccounts.length) return '';
+  return `<section class="bank-section">
+    <h2 class="section-title">حساباتنا البنكية</h2>
+    <div class="bank-grid">${db.bankAccounts.map(b =>
+      `<div class="bank-card">
+        <div class="bank-title">🏦 ${esc(b.bank)}</div>
+        <div class="bank-holder">الاسم: <b>${esc(b.holder)}</b></div>
+        <div class="bank-num-row">
+          <span class="bank-num" dir="ltr">${esc(b.number)}</span>
+          <button type="button" class="copy-btn" onclick="copyAccountNumber(${JSON.stringify(b.number).replace(/"/g, '&quot;')},this)">نسخ</button>
+        </div>
+      </div>`
+    ).join('')}</div>
+  </section>`;
+}
+
+function authFormsHtml(stayInCart = false) {
+  return `<div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUser" placeholder="اسم المستخدم"><input id="loginPass" type="password" placeholder="كلمة المرور"><button id="loginBtn" onclick="login(${stayInCart})">دخول</button></div>
+  <div class="accountform"><h3>إنشاء حساب جديد</h3><input id="custName" placeholder="اسم العميل"><input id="custPhone" type="tel" placeholder="رقم جواله"><input id="newUser" placeholder="اسم المستخدم"><input id="newPass" type="password" placeholder="كلمة المرور"><button id="signupBtn" onclick="signup(${stayInCart})">حفظ / إنشاء حساب</button></div>`;
+}
+
+function renderContent() {
+  const content = document.getElementById('content');
+  const q = normalizeSearch(document.getElementById('searchInput').value);
+
+  if (q) {
+    const filtered = db.products.filter(p => normalizeSearch((p.name || '') + ' ' + (p.desc || '') + ' ' + (p.category || '') + ' ' + (p.subcategory || '')).includes(q));
+    content.innerHTML = '<h2 class="section-title">نتائج البحث</h2>' +
+      (filtered.length ? '<div class="products">' + filtered.map(productCard).join('') + '</div>' : '<div class="panel">لا توجد منتجات تطابق البحث.</div>');
+    return;
+  }
+
+  // 1. الأقسام
+  if (currentTab === 'sections') {
+    if (!db.categories.length) { content.innerHTML = '<div class="panel">لا توجد أقسام مضافة حالياً.</div>'; return; }
+    let html = '<div class="main-cat-grid">';
+    for (let i = 0; i < db.categories.length; i += 2) {
+      const rowCats = [db.categories[i], db.categories[i + 1]].filter(Boolean);
+      rowCats.forEach((cat, offset) => {
+        const realIdx = i + offset;
+        const isExpanded = (expandedMainCat === cat);
+        const img = db.categoryImages[cat] || categoryArt(cat);
+        html += `<div class="main-cat-card ${isExpanded ? 'expanded' : ''}" onclick="onMainCategoryClick(${realIdx})">
+          <div class="main-cat-media"><img src="${imageSrc(img)}" alt="${esc(cat)}"></div>
+          <div class="main-cat-footer"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span>${esc(cat)}</span></div>
+        </div>`;
+      });
+
+      const expandedInRow = rowCats.find(c => c === expandedMainCat);
+      if (expandedInRow) {
+        const subs = db.subcategories[expandedInRow] || [];
+        html += '<div class="subcat-panel">' + subs.map((s, sIdx) =>
+          `<div class="subcat-card" onclick="openSubcategory(${JSON.stringify(expandedInRow).replace(/"/g, '&quot;')},${sIdx})">
+            <div class="subcat-media"><img src="${imageSrc(s.image)}" alt="${esc(s.name)}"></div>
+            <div class="subcat-title">${esc(s.name)}</div>
+          </div>`
+        ).join('') + '</div>';
+      }
+    }
+    html += '</div>';
+    content.innerHTML = html;
+    return;
+  }
+
+  // 2. المنتجات داخل القسم
+  if (currentTab === 'products') {
+    const subs = db.subcategories[activeMainCat] || [];
+    let pillsHtml = '';
+    if (subs.length) {
+      pillsHtml = '<div class="sub-pills-bar">' + subs.map((s, sIdx) => {
+        const isAct = (s.name === activeSubCat);
+        return `<button type="button" class="sub-pill ${isAct ? 'active' : ''}" onclick="openSubcategory(${JSON.stringify(activeMainCat).replace(/"/g, '&quot;')},${sIdx})">
+          <div class="sub-pill-circle"><img src="${imageSrc(s.image)}" alt=""></div>
+          <span>${esc(s.name)}</span>
+        </button>`;
+      }).join('') + '</div>';
+    }
+
+    const wantedMain = normalizeSearch(activeMainCat);
+    const wantedSub = normalizeSearch(activeSubCat);
+    const list = db.products.filter(p => {
+      const pMain = normalizeSearch(p.category || '');
+      const pSub = normalizeSearch(p.subcategory || '');
+      if (wantedSub) return pMain === wantedMain && pSub === wantedSub;
+      return pMain === wantedMain;
+    });
+
+    content.innerHTML = pillsHtml + (list.length ? '<div class="products">' + list.map(productCard).join('') + '</div>' : '<div class="panel">لا توجد منتجات في هذا القسم حتى الآن.</div>');
+    return;
+  }
+
+  // 3. السلة
+  if (currentTab === 'cart') {
+    const chosen = cart.map(it => ({ it, p: db.products.find(x => x.id === it.id) })).filter(x => x.p);
+    let html = `<h2 class="section-title">السلة (${chosen.reduce((a, x) => a + x.it.qty, 0)} منتجات)</h2>`;
+    if (!chosen.length) {
+      html += '<div class="panel">السلة فارغة حالياً.<br><button onclick="continueShopping()" style="margin-top:10px">تصفح الأقسام</button></div>';
+      content.innerHTML = html;
+      return;
+    }
+    const total = chosen.reduce((sum, x) => sum + (Number(x.p.price || 0) * x.it.qty), 0);
+    html += '<div class="products">' + chosen.map(({ p, it }) =>
+      `<article class="product">
+        <div class="product-img-wrap" onclick="openImageModal('${p.id}')"><img src="${imageSrc(p.image)}" alt=""></div>
+        <div class="product-body">
+          <h3 class="product-name">${esc(p.name)} (×${it.qty})</h3>
+          <div class="product-bottom">
+            <span class="product-price">${(Number(p.price || 0) * it.qty).toLocaleString()} <small>ريال</small></span>
+            <button style="background:#c0392b;color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer" onclick="removeCart('${p.id}')">حذف</button>
+          </div>
+        </div>
+      </article>`
+    ).join('') + '</div>';
+    html += `<div class="total-summary-box"><span>إجمالي المشتريات:</span><span>${total.toLocaleString()} ريال</span></div>`;
+    html += `<div class="cart-actions">
+      <button class="btn-buy" onclick="startCheckout()">شراء المنتجات</button>
+      <button class="btn-secondary" onclick="continueShopping()">+ إضافة منتجات أخرى</button>
+      <button class="btn-secondary" onclick="loadCloudDB(true)">⟳ تحديث</button>
+    </div>`;
+
+    if (showCheckoutBox) {
+      html += '<div id="cartCheckoutSection">';
+      if (user) {
+        html += `<div class="checkoutform">
+          <h3>إتمام الطلب (${esc(user.name)})</h3>
+          <div style="background:#f4f7fc;padding:10px 14px;border-radius:12px;margin-bottom:10px;font-weight:bold;color:var(--navy)">المبلغ الإجمالي: ${total.toLocaleString()} ريال</div>
+          <label style="font-weight:bold;display:block;margin-top:8px">صورة سند الإيداع</label>
+          <input id="depositFile" type="file" accept="image/*">
+          <textarea id="location" placeholder="موقع العميل (المدينة / الحي / العنوان)"></textarea>
+          <input id="orderPhone" value="${esc(user.phone)}" type="tel" placeholder="رقم الجوال">
+          <button class="btn-buy" id="orderBtn" onclick="submitOrder()">إرسال الطلب (${total.toLocaleString()} ريال)</button>
+        </div>`;
+      } else {
+        html += '<div class="panel"><p style="color:var(--navy);font-weight:bold;margin:0">لإكمال الشراء، يرجى تسجيل الدخول أو إنشاء حساب جديد:</p></div>' + authFormsHtml(true);
+      }
+      html += '</div>';
+    }
+    content.innerHTML = html;
+    return;
+  }
+
+  // 4. العنوان + الحسابات البنكية
+  if (currentTab === 'address') {
+    const s = db.settings || {};
+    const rawPhone = String(s.phone || '778358110').replace(/[^0-9]/g, '');
+    const waPhone = rawPhone.startsWith('967') ? rawPhone : '967' + rawPhone;
+    content.innerHTML = `<h2 class="section-title">العنوان</h2>
+      <div class="panel" style="text-align:center;line-height:2.1">
+        <h3>${esc(s.subBrand || 'صيدليه المنورة للادوية و المستلزمات الطبيه')}</h3>
+        <p>🏥 ${esc(s.address || 'المكلا - الديس - خلف ملعب بارادم')}</p>
+        <p>📱 ${esc(s.phone || '778358110')}</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <a class="contact-link whatsapp" href="https://wa.me/${waPhone}" target="_blank" rel="noopener">واتساب</a>
+          <a class="contact-link call" href="tel:+${waPhone}">اتصال</a>
+        </div>
+      </div>` + renderBanksHtml();
+    return;
+  }
+
+  // 5. حسابي وطلباتي
+  if (currentTab === 'account') {
+    if (!user) {
+      content.innerHTML = '<h2 class="section-title">حسابي</h2>' + authFormsHtml(false);
+      return;
+    }
+    const list = db.orders.filter(o => o.customerId === user.id || o.username === user.username).slice().reverse();
+    content.innerHTML = `<h2 class="section-title">حسابي</h2>
+      <div class="accountform">
+        <h3>مرحباً ${esc(user.name)}</h3>
+        <p>اسم المستخدم: ${esc(user.username)} · الجوال: ${esc(user.phone)}</p>
+        <button onclick="loadCloudDB(true)">تحديث الطلبات ↻</button>
+        <button style="background:#d94c4c" onclick="logout()">خروج</button>
+      </div>
+      <h3 class="section-title">طلباتي</h3>` +
+      (list.length ? list.map(o => {
+        const tot = o.total || (o.items || []).reduce((s, i) => s + (Number(i.price || 0) * Number(i.qty || 1)), 0);
+        return `<div class="ordercard">
+          <b>طلب ${esc(o.id)}</b> — <b>الإجمالي: ${Number(tot).toLocaleString()} ريال</b>
+          <p>${esc(o.created)} · <span style="background:#eaf4ee;color:#21885b;padding:4px 9px;border-radius:12px;font-size:12px;font-weight:bold">${esc(o.status)}</span></p>
+          <p>${(o.items || []).map(i => esc(i.name) + ' × ' + i.qty).join('، ')}</p>
+          ${o.deposit && o.deposit.startsWith('http') ? `<p><a href="${esc(o.deposit)}" target="_blank" style="color:#176b50;font-size:13px;font-weight:bold">عرض صورة السند ↗</a></p>` : ''}
+          <div class="stepper">${statuses.map(s => `<span class="${statuses.indexOf(s) <= statuses.indexOf(o.status) ? 'done' : ''}">${esc(s)}</span>`).join('')}</div>
+        </div>`;
+      }).join('') : '<div class="panel">لا توجد طلبات حتى الآن</div>');
+    return;
+  }
+
+  // 6. الرئيسية
+  const home = db.products.filter(p => p.home);
+  content.innerHTML = renderBannersHtml() +
+    '<h2 class="section-title">الرئيسية</h2>' +
+    (home.length ? '<div class="products">' + home.map(productCard).join('') + '</div>' : '<div class="panel">ستظهر هنا المنتجات التي يحددها المسؤول للرئيسية</div>');
+}
+
+function setTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.navitem').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  updateTopbar();
+  if (ordersTimer) { clearInterval(ordersTimer); ordersTimer = null; }
+  if (tab === 'account') {
+    loadCloudDB();
+    ordersTimer = setInterval(() => { if (currentTab === 'account' && user) loadCloudDB(); }, 10000);
+  } else if (tab === 'sections' || tab === 'address') {
+    loadCloudDB();
+  }
+  renderContent();
+  window.scrollTo(0, 0);
+}
+
+async function login(stayInCart = false) {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (!u || !p) return alert('أدخل اسم المستخدم وكلمة المرور');
+  const btn = document.getElementById('loginBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'جاري الدخول...'; }
   try {
     const res = await fetch('/api/db', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'login', payload: { username: u, password: p } })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
     user = data.customer;
-    localStorage.setItem('manoraUser',JSON.stringify(user));
-    closeModal();
+    localStorage.setItem('manoraUser', JSON.stringify(user));
+    if (stayInCart) showCheckoutBox = true;
     await loadCloudDB();
     alert('تم تسجيل الدخول');
   } catch (e) {
     alert(e.message);
-    if(btn){btn.disabled=false;btn.textContent='دخول';}
+    if (btn) { btn.disabled = false; btn.textContent = 'دخول'; }
   }
 }
 
-async function signup(){
-  let name=document.getElementById('custName').value.trim(),phone=document.getElementById('custPhone').value.trim(),username=document.getElementById('newUser').value.trim(),password=document.getElementById('newPass').value;
-  if(!name||!phone||!username||!password)return alert('يرجى تعبئة جميع البيانات');
-  let btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='جاري الحفظ...';
-  let c={id:crypto.randomUUID(),name,phone,username,password,created:new Date().toLocaleString('ar')};
+async function signup(stayInCart = false) {
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const username = document.getElementById('newUser').value.trim();
+  const password = document.getElementById('newPass').value;
+  if (!name || !phone || !username || !password) return alert('يرجى تعبئة جميع البيانات');
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+  const c = { id: crypto.randomUUID(), name, phone, username, password, created: new Date().toLocaleString('ar') };
   try {
     const res = await fetch('/api/db', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'signup', payload: c })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'تعذر إنشاء الحساب');
-    user={id:c.id,name,username,phone};
-    localStorage.setItem('manoraUser',JSON.stringify(user));
-    closeModal();
+    user = { id: c.id, name, username, phone };
+    localStorage.setItem('manoraUser', JSON.stringify(user));
+    if (stayInCart) showCheckoutBox = true;
     await loadCloudDB();
     alert('تم إنشاء الحساب وحفظه، يمكنك التسوق الآن');
   } catch (e) {
     alert(e.message);
-    btn.disabled=false;btn.textContent='حفظ';
+    btn.disabled = false; btn.textContent = 'حفظ / إنشاء حساب';
   }
 }
 
-function renderAccount(){let el=document.getElementById('accountContent');el.innerHTML=user?`<h3>مرحباً ${esc(user.name)}</h3><p>اسم المستخدم: ${esc(user.username)}</p><p>رقم الجوال: ${esc(user.phone)}</p><button onclick="showView('ordersView')">طلباتي</button> <button class="secondary" onclick="logout()">خروج</button>`:authMarkup();if(!user)authMode('login')}
-function logout(){user=null;localStorage.removeItem('manoraUser');renderAccount()}
-
-function checkout(){
-  if(!user){openModal('تسجيل الدخول مطلوب',authMarkup());authMode('login');return}
-  openModal('إتمام الطلب',`
-    <div id="checkoutItems">${cart.map(it=>{let p=db.products.find(x=>x.id===it.id);return p?`<p>${esc(p.name)} × ${it.qty}</p>`:''}).join('')}</div>
-    <label>صورة سند الإيداع</label>
-    <input id="depositFile" type="file" accept="image/*">
-    <label>موقع العميل</label>
-    <textarea id="location" placeholder="المدينة / الحي / العنوان"></textarea>
-    <label>رقم الجوال</label>
-    <input id="orderPhone" value="${esc(user.phone)}" type="tel">
-    <button id="orderBtn" class="green" onclick="submitOrder()">إرسال الطلب</button>
-  `);
+function logout() {
+  user = null;
+  localStorage.removeItem('manoraUser');
+  renderContent();
 }
 
-async function submitOrder(){
-  let fileInput=document.getElementById('depositFile'),location=document.getElementById('location').value.trim(),phone=document.getElementById('orderPhone').value.trim();
-  let file=fileInput.files[0];
-  if(!file)return alert('يرجى اختيار صورة سند الإيداع');
-  if(file.size > 4*1024*1024)return alert('حجم صورة السند يجب أن يكون أقل من 4 ميجابايت');
-  if(!location||!phone)return alert('أدخل الموقع ورقم الجوال');
-  
-  let btn=document.getElementById('orderBtn');btn.disabled=true;btn.textContent='جاري رفع السند وإرسال الطلب...';
+async function submitOrder() {
+  if (!user) { showCheckoutBox = true; renderContent(); return; }
+  const fileInput = document.getElementById('depositFile');
+  const location = document.getElementById('location').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const file = fileInput.files[0];
+  if (!file) return alert('يرجى اختيار صورة سند الإيداع');
+  if (file.size > 4 * 1024 * 1024) return alert('حجم صورة السند يجب أن يكون أقل من 4 ميجابايت');
+  if (!location || !phone) return alert('أدخل الموقع ورقم الجوال');
+
+  const btn = document.getElementById('orderBtn');
+  btn.disabled = true; btn.textContent = 'جاري رفع السند وإرسال الطلب...';
   try {
     const base64 = await new Promise((resolve, reject) => {
       const r = new FileReader();
@@ -208,65 +735,47 @@ async function submitOrder(){
     });
     const upRes = await fetch('/api/db', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'uploadImage', payload: { base64, filename: 'receipt-' + file.name } })
     });
     const upData = await upRes.json();
     if (!upRes.ok) throw new Error(upData.error || 'فشل رفع صورة السند');
 
-    let order={
-      id:'ORD-'+Date.now().toString().slice(-7),
-      customerId:user.id,
-      customerName:user.name,
-      username:user.username,
+    const items = cart.map(it => { const p = db.products.find(x => x.id === it.id); return { name: p?.name || 'منتج', price: p?.price || 0, qty: it.qty }; });
+    const total = items.reduce((s, i) => s + (Number(i.price) * i.qty), 0);
+
+    const order = {
+      id: 'ORD-' + Date.now().toString().slice(-7),
+      customerId: user.id,
+      customerName: user.name,
+      username: user.username,
       phone,
       location,
-      deposit:upData.url,
-      items:cart.map(it=>{let p=db.products.find(x=>x.id===it.id);return {name:p?.name||'منتج',price:p?.price||0,qty:it.qty}}),
-      status:'تم الطلب',
-      created:new Date().toLocaleString('ar'),
-      history:['تم الطلب']
+      deposit: upData.url,
+      items,
+      total,
+      status: 'تم الطلب',
+      created: new Date().toLocaleString('ar'),
+      history: ['تم الطلب']
     };
     const res = await fetch('/api/db', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'newOrder', payload: order })
     });
     if (!res.ok) throw new Error('فشل إرسال الطلب');
     db.orders.push(order);
-    cart=[];localStorage.setItem('manoraCart','[]');
-    closeModal();showView('ordersView');alert('تم إرسال الطلب وصورة السند بنجاح');
+    cart = [];
+    showCheckoutBox = false;
+    localStorage.setItem('manoraCart', '[]');
+    updateCartDot();
+    setTab('account', document.querySelectorAll('.navitem')[4]);
+    alert('تم إرسال الطلب وصورة السند بنجاح');
   } catch (e) {
     alert(e.message);
-    btn.disabled=false;btn.textContent='إرسال الطلب';
+    btn.disabled = false; btn.textContent = 'إرسال الطلب';
   }
 }
-
-async function manualRefreshOrders() {
-  const btn = document.getElementById('refreshOrdersBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'جاري التحديث...'; }
-  await loadCloudDB();
-  if (btn) { btn.disabled = false; btn.textContent = 'تحديث الطلبات ↻'; }
-}
-
-const statuses=['تم الطلب','مراجعة','تم التنفيذ','تم إرسال الطلب','تم الاستلام'];
-function renderOrders(){
-  let list=db.orders.filter(o=>user&&(o.customerId===user.id||o.username===user.username)).slice().reverse();
-  document.getElementById('ordersContent').innerHTML=list.length?list.map(o=>`
-    <div class="admin-list">
-      <b>طلب ${esc(o.id)}</b>
-      <p>${esc(o.created)} · <span class="status">${esc(o.status)}</span></p>
-      <p>${o.items.map(i=>esc(i.name)+' × '+i.qty).join('، ')}</p>
-      ${o.deposit && o.deposit.startsWith('http') ? `<p><a href="${esc(o.deposit)}" target="_blank" style="color:#176b50;font-size:13px;font-weight:bold">عرض صورة السند ↗</a></p>` : ''}
-      <div class="stepper">${statuses.map(s=>`<span class="${statuses.indexOf(s)<=statuses.indexOf(o.status)?'done':''}">${esc(s)}</span>`).join('')}</div>
-    </div>
-  `).join(''):'لا توجد طلبات حتى الآن';
-}
-
-function render(){renderProducts();renderCart();renderAccount();renderOrders();document.getElementById('banner').style.display=db.banners.length?'block':'none';if(db.banners.length){bannerIndex%=db.banners.length;document.getElementById('bannerImg').src=imageSrc(db.banners[bannerIndex].image);document.getElementById('bannerDots').innerHTML=db.banners.map((x,i)=>`<span class="dot ${i===bannerIndex?'active':''}"></span>`).join('')}}
-setInterval(()=>{if(db.banners.length){bannerIndex=(bannerIndex+1)%db.banners.length;document.getElementById('bannerImg').src=imageSrc(db.banners[bannerIndex].image);document.getElementById('bannerDots').innerHTML=db.banners.map((x,i)=>`<span class="dot ${i===bannerIndex?'active':''}"></span>`).join('')}},3500);
-function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.remove('hidden')}
-function closeModal(){document.getElementById('modal').classList.add('hidden')}
 
 loadCloudDB();
 </script>
