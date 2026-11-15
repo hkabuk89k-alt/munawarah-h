@@ -1,86 +1,256 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>لوحة تحكم - صيدلية المنورة</title>
 <style>
-:root{--deep:#176b50;--blue:#315c9e;--ink:#243247;--bg:#f3f7fb}
+:root{--deep:#176b50;--blue:#1a2b7c;--ink:#20212a;--bg:#eaf2f8}
 *{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(145deg,#e8f3fa 0%,#f3f7fb 48%,#e6f1ed 100%);color:var(--ink);min-height:100vh;padding:16px}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0;border-radius:12px;padding:10px 14px;background:var(--blue);color:white}
-button:disabled{opacity:0.6;cursor:not-allowed}
-button.secondary{background:#edf1fb;color:#304d99}
-button.danger{background:#d94c4c}
-button.green{background:var(--deep)}
-input,textarea,select{width:100%;padding:11px;border:1px solid #dce2e8;border-radius:10px;background:white;margin:5px 0 12px}
-label{font-size:13px;color:#555;display:block}
-.container{max-width:850px;margin:20px auto}
-.login-box{max-width:400px;margin:80px auto;background:#fff;padding:24px;border-radius:20px;box-shadow:0 4px 18px #0001}
-.panel{background:#fff;border-radius:20px;padding:20px;box-shadow:0 4px 18px #0001}
-.header-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:12px}
-.header-bar h2{margin:0;color:#24405d}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.tabs button{background:#edf1fb;color:#304d99}
-.tabs button.active{background:var(--blue);color:white}
-.admin-list{border:1px solid #e6e8eb;border-radius:12px;padding:12px;margin:10px 0}
-.admin-list img{width:60px;height:60px;object-fit:cover;border-radius:8px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.row>*{flex:1}
-.status{display:inline-block;padding:5px 10px;border-radius:20px;background:#eaf4ee;color:#21885b;font-size:12px;font-weight:bold}
-.hidden{display:none!important}
-.sync-badge{font-size:12px;color:#176b50;background:#eaf4ee;padding:4px 10px;border-radius:12px}
-.receipt-box{margin:8px 0;padding:8px;background:#f8fafc;border-radius:10px;border:1px dashed #cbd5e1;display:inline-block}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh}
+.panel{background:#fff;border-radius:20px;padding:18px;margin:16px auto;max-width:760px;width:100%}
+.panel h2{margin:0 0 12px;color:var(--blue)}
+.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #e4e9f2;border-radius:16px;padding:12px 14px;margin:10px 0;flex-wrap:wrap;background:#fafcff}
+.ordercard{background:#f9fbfd;border:1px solid #e1e8f0;border-radius:16px;padding:14px;margin:12px 0}
+.stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
+.stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
+.stage.done{background:#18865a;color:white}
+.ordercard img.proof{max-width:100%;max-height:220px;object-fit:contain;display:block;margin:8px 0;border-radius:10px;border:1px solid #ddd}
+.banner-admin-card{display:flex;align-items:center;gap:10px;border:1px solid #e1e6ee;border-radius:16px;padding:10px;margin:10px 0}
+.banner-admin-card img{width:82px;height:60px;object-fit:cover;border-radius:10px}
+.banner-admin-card span{flex:1;font-weight:bold}
+#adminOverlay{display:block;position:relative;min-height:100dvh;background:var(--bg);padding:14px}
+#adminOverlay .panel#adminPanel{max-width:760px;margin:20px auto;background:#fff;border-radius:34px;padding:26px 22px 32px;box-shadow:0 10px 30px #203c5510;color:#26354a}
+#adminPanel h2{font-size:clamp(22px,5vw,30px);color:var(--blue);text-align:right;margin:0 0 12px}
+#adminPanel h3{font-size:19px;color:var(--blue);margin:10px 0 14px}
+#adminPanel label{display:block;color:#555;font-size:15px;margin:14px 0 6px;font-weight:bold}
+#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select,#adminPanel textarea{width:100%;height:56px;padding:12px 16px;margin:6px 0 10px;border:2px solid #e0e4e8;border-radius:16px;background:#fff;font:inherit;font-size:16px}
+#adminPanel input[type=file]{width:100%;padding:14px;border:2px solid #e0e4e8;border-radius:16px;margin:6px 0 10px;font:inherit}
+#adminPanel input[type=color]{width:100%;height:52px;padding:5px;border:2px solid #e0e4e8;border-radius:16px;background:#fff;cursor:pointer}
+#adminPanel button,.panel button{border:0;border-radius:16px;padding:13px 18px;margin:4px;background:#edf1fb;color:var(--blue);font:inherit;font-size:15px;font-weight:bold;cursor:pointer}
+#adminPanel button:disabled,.panel button:disabled{opacity:.6;cursor:not-allowed}
+#adminPanel button.danger,.panel button.danger{background:#d94b4b;color:white}
+#adminPanel button.primary,.panel button.primary{background:var(--blue);color:#fff}
+#loginBox input{width:100%;padding:13px;margin:8px 0 14px;border:2px solid #e0e4e8;border-radius:14px;font:inherit}
+.admin-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.admin-toolbar button{flex:1;min-width:110px}
+.admin-status{display:inline-block;background:#e8f4ed;color:#23744f;border-radius:25px;padding:8px 16px;margin:0 0 8px;font-weight:bold;font-size:14px}
+.admin-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 22px}
+.admin-tabs button{min-height:52px;margin:0!important;font-size:14px!important}
+.admin-tabs button.selected{background:var(--blue)!important;color:white!important;box-shadow:0 4px 12px #1a2b7c33}
+.admin-section{display:none;border-top:2px solid #eef2f8;padding-top:18px;margin-top:10px;animation:fadeTab .18s ease}
+.admin-section.active{display:block}
+@keyframes fadeTab{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.category-emoji{width:56px;height:56px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:28px}
+.category-admin-preview{width:56px;height:56px;object-fit:cover;border-radius:12px;background:#f4f7fc}
+.subcat-box{background:#f5f8ff;border:1px solid #d8e3f8;border-radius:20px;padding:16px;margin-top:22px}
+.pass-box{background:#fff8f8;border:1px solid #f5c2c7;border-radius:20px;padding:16px;margin-top:24px}
+.edit-card{background:#fff8eb;border:2px solid #f59f00;border-radius:18px;padding:14px;margin:12px 0}
+.color-presets{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px;align-items:center}
+.color-swatch{width:42px!important;height:42px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
+.logo-preview-box{display:flex;align-items:center;gap:12px;margin:8px 0}
+.logo-preview-box img{width:64px;height:64px;object-fit:contain;border-radius:14px;border:1px solid #ddd;background:#f8fafc;padding:4px}
+@media(max-width:480px){#adminOverlay{padding:8px}#adminOverlay .panel#adminPanel{padding:20px 16px 28px;border-radius:28px;margin:10px auto}.admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
+<div id="adminOverlay">
+  <section class="panel" id="loginBox" style="max-width:440px;margin-top:50px">
+    <h2>دخول لوحة التحكم</h2>
+    <p><a href="index.html" style="color:var(--blue);text-decoration:none;font-weight:bold">← العودة إلى المتجر</a></p>
+    <input id="adminPass" type="password" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter')checkAdmin()">
+    <button id="loginBtn" class="primary" style="width:100%" onclick="checkAdmin()">تسجيل الدخول</button>
+    <p id="loginError" style="color:#c0392b"></p>
+  </section>
 
-<div id="loginBox" class="login-box">
-  <h2 style="margin-top:0;text-align:center;color:#24405d">دخول لوحة التحكم</h2>
-  <label>كلمة المرور</label>
-  <input id="adminPass" type="password" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter')checkAdmin()">
-  <button id="loginBtn" class="green" style="width:100%" onclick="checkAdmin()">تسجيل الدخول</button>
-</div>
+  <section class="panel" id="adminPanel" style="display:none">
+    <h2 id="adminHeaderTitle">لوحة تحكم صيدلية المنورة</h2>
+    <div class="admin-status" id="syncStatus">✓ متصل بالسحابة</div>
+    <div class="admin-toolbar">
+      <a href="index.html" style="flex:1;min-width:110px;text-decoration:none"><button style="width:100%;margin:0">عرض المتجر ↗</button></a>
+      <button onclick="refreshData()">⟳ تحديث</button>
+      <button class="danger" onclick="adminLogout()">خروج</button>
+    </div>
 
-<div id="adminDashboard" class="container hidden">
-  <div class="panel">
-    <div class="header-bar">
-      <div>
-        <h2>لوحة تحكم صيدلية المنورة</h2>
-        <span id="syncStatus" class="sync-badge">متصل بالسحابة ✓</span>
+    <div class="admin-tabs">
+      <button class="selected" onclick="showAdminTab('productSection',this)">المنتجات</button>
+      <button onclick="showAdminTab('categorySection',this)">الأقسام والفرعية</button>
+      <button onclick="showAdminTab('bannerSection',this)">صور الإعلان</button>
+      <button onclick="showAdminTab('bankSection',this)">الحسابات البنكية</button>
+      <button onclick="showAdminTab('orderSection',this)">الطلبات</button>
+      <button onclick="showAdminTab('customerSection',this)">العملاء</button>
+      <button onclick="showAdminTab('settingsSection',this)">الإعدادات والمظهر</button>
+    </div>
+
+    <!-- 1. المنتجات -->
+    <div class="admin-section active" id="productSection">
+      <h3>إضافة / تعديل منتج</h3>
+      <input id="pId" type="hidden">
+      <input id="pName" placeholder="اسم المنتج">
+      <input id="pDesc" placeholder="وصف مختصر للمنتج (اختياري)">
+      <input id="pPrice" type="number" min="0" placeholder="السعر">
+      <label>القسم الرئيسي</label>
+      <select id="pCategory" onchange="populateProductSubcategories()"></select>
+      <label>القسم الفرعي (اختياري)</label>
+      <select id="pSubcategory"></select>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="pHome" type="checkbox" style="width:22px;height:22px"> عرض المنتج في الرئيسية</label>
+      <label>صورة المنتج</label>
+      <input id="pImageFile" type="file" accept="image/*">
+      <input id="pImageUrl" type="url" placeholder="أو رابط الصورة (اختياري)">
+      <button class="primary" id="saveProdBtn" onclick="saveProduct()">حفظ المنتج</button>
+      <button class="danger" onclick="clearProductForm()">إلغاء التعديل</button>
+      <h3>المنتجات المضافة</h3>
+      <div id="adminProducts"></div>
+    </div>
+
+    <!-- 2. الأقسام الرئيسية والفرعية -->
+    <div class="admin-section" id="categorySection">
+      <h3>1. الأقسام الرئيسية</h3>
+      <input id="catNew" placeholder="اسم القسم الرئيسي الجديد">
+      <label>صورة القسم الرئيسي</label>
+      <input id="catImageFile" type="file" accept="image/*">
+      <button class="primary" id="addCatBtn" onclick="addCategory()">+ إضافة قسم رئيسي</button>
+
+      <div id="editMainCatBox" class="edit-card" style="display:none">
+        <h4 style="margin:0 0 10px;color:#b45309">تعديل القسم الرئيسي</h4>
+        <input id="editMainCatName" placeholder="اسم القسم الجديد">
+        <label>تغيير صورة القسم (اتركه فارغاً للاحتفاظ بالصورة الحالية)</label>
+        <input id="editMainCatImage" type="file" accept="image/*">
+        <button class="primary" id="saveEditMainCatBtn" onclick="saveEditedMainCategory()">حفظ التعديل</button>
+        <button onclick="cancelEditMainCategory()">إلغاء</button>
       </div>
-      <div>
-        <button class="secondary" onclick="refreshData()">تحديث البيانات ↻</button>
-        <a href="index.html" target="_blank" style="text-decoration:none;margin:0 6px"><button class="secondary">عرض المتجر ↗</button></a>
-        <button class="danger" onclick="adminLogout()">خروج</button>
+
+      <div id="adminCategories"></div>
+
+      <div class="subcat-box">
+        <h3>2. الأقسام الفرعية داخل كل قسم</h3>
+        <label>اختر القسم الرئيسي التابع له</label>
+        <select id="subcatParentSelect" onchange="renderAdminSubcategories()"></select>
+        <input id="newSubcategory" placeholder="اسم القسم الفرعي (مثلاً: مسكنات، قطر عيون...)">
+        <label>صورة القسم الفرعي</label>
+        <input id="newSubcategoryImage" type="file" accept="image/*">
+        <button class="primary" id="addSubcatBtn" onclick="addSubcategory()">+ إضافة قسم فرعي</button>
+        <div id="adminSubcategories"></div>
       </div>
     </div>
 
-    <div class="tabs" id="adminTabs">
-      <button data-tab="products" onclick="adminSection('products')">المنتجات</button>
-      <button data-tab="categories" onclick="adminSection('categories')">الأقسام</button>
-      <button data-tab="banners" onclick="adminSection('banners')">صور الإعلان</button>
-      <button data-tab="customers" onclick="adminSection('customers')">العملاء</button>
-      <button data-tab="orders" onclick="adminSection('orders')">الطلبات</button>
-      <button data-tab="password" onclick="adminSection('password')">كلمة المرور</button>
+    <!-- 3. صور الإعلان -->
+    <div class="admin-section" id="bannerSection">
+      <h3>إعلانات متحركة (حتى 4 صور)</h3>
+      <input id="bannerFile" type="file" accept="image/*">
+      <input id="bannerTitle" placeholder="عنوان الإعلان (اختياري)">
+      <input id="bannerUrl" type="url" placeholder="أو رابط الصورة (اختياري)">
+      <button class="primary" id="addBannerBtn" onclick="addBanner()">إضافة إعلان</button>
+      <div id="adminBanners"></div>
     </div>
 
-    <div id="adminContent"></div>
-  </div>
+    <!-- 4. الحسابات البنكية -->
+    <div class="admin-section" id="bankSection">
+      <h3>الحسابات البنكية (تظهر في تبويب العنوان)</h3>
+      <input id="bankName" placeholder="اسم البنك / المحفظة (مثلاً: بنك الكريمي، جوالي، كاش...)">
+      <input id="bankAccountName" placeholder="اسم صاحب الحساب">
+      <input id="bankAccountNumber" placeholder="رقم الحساب / الرقم">
+      <button class="primary" id="addBankBtn" onclick="addBankAccount()">+ إضافة حساب بنكي</button>
+      <h3>الحسابات المضافة</h3>
+      <div id="adminBanks"></div>
+    </div>
+
+    <!-- 5. الطلبات -->
+    <div class="admin-section" id="orderSection">
+      <h3>طلبات العملاء ومراحلها</h3>
+      <div id="adminOrders"></div>
+    </div>
+
+    <!-- 6. العملاء -->
+    <div class="admin-section" id="customerSection">
+      <h3>حسابات العملاء المسجلين</h3>
+      <div id="adminCustomers"></div>
+    </div>
+
+    <!-- 7. الإعدادات والمظهر وكلمة المرور -->
+    <div class="admin-section" id="settingsSection">
+      <h3>إعدادات الصيدلية والشعار والألوان</h3>
+      <label>اسم الصيدلية في الأعلى</label>
+      <input id="adminBrand" value="صيدلية المنورة">
+      <label>العنوان الفرعي في تبويب العنوان</label>
+      <input id="adminSubBrand" value="صيدليه المنورة للادوية و المستلزمات الطبيه">
+
+      <label>شعار الصيدلية (يظهر بجانب الاسم في الأعلى)</label>
+      <div class="logo-preview-box" id="logoPreviewBox" style="display:none">
+        <img id="logoPreviewImg" src="" alt="الشعار">
+        <button type="button" class="danger" style="padding:10px 14px;font-size:14px" onclick="removeLogo()">حذف الشعار</button>
+      </div>
+      <input id="adminLogoFile" type="file" accept="image/*">
+
+      <label>لون خلفية المتجر</label>
+      <div class="color-presets">
+        <button type="button" class="color-swatch" style="background:#f3f7fb" title="الافتراضي" onclick="pickBgColor('#f3f7fb')"></button>
+        <button type="button" class="color-swatch" style="background:#eaf1fb" title="أزرق فاتح" onclick="pickBgColor('#eaf1fb')"></button>
+        <button type="button" class="color-swatch" style="background:#e8f6ef" title="أخضر طبي" onclick="pickBgColor('#e8f6ef')"></button>
+        <button type="button" class="color-swatch" style="background:#fdf2f8" title="وردي ناعم" onclick="pickBgColor('#fdf2f8')"></button>
+        <button type="button" style="padding:9px 12px;font-size:13px" onclick="pickBgColor('#f3f7fb')">إعادة الافتراضي</button>
+      </div>
+      <input id="adminBgColor" type="color" value="#f3f7fb">
+
+      <label>العنوان التفصيلي للصيدلية</label>
+      <input id="adminAddress" value="المكلا - الديس - خلف ملعب بارادم">
+      <label>رقم الجوال / واتساب</label>
+      <input id="adminPhone" type="tel" value="778358110">
+      <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">حفظ الإعدادات والمظهر</button>
+
+      <div class="pass-box">
+        <h3 style="color:#b02a37;margin-top:0">تغيير كلمة مرور لوحة التحكم</h3>
+        <input id="oldAdminPass" type="password" placeholder="كلمة المرور الحالية">
+        <input id="newAdminPass" type="password" placeholder="كلمة المرور الجديدة (4 أحرف على الأقل)">
+        <input id="confirmAdminPass" type="password" placeholder="تأكيد كلمة المرور الجديدة">
+        <button class="danger" id="savePassBtn" onclick="changeAdminPassword()">حفظ كلمة المرور في السحابة</button>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script>
 const statuses = ['تم الطلب','مراجعة','تم التنفيذ','تم إرسال الطلب','تم الاستلام'];
 let db = null;
 let currentAuthPass = sessionStorage.getItem('manoraAdminPass') || '';
-let activeTab = 'products';
+let activeTab = 'productSection';
+let editingMainCatOldName = null;
 
-function setSync(text, busy = false) {
+function showAdminTab(id, btn) {
+  activeTab = id;
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.remove('selected'));
+  if (btn) btn.classList.add('selected');
+}
+
+function setSync(text, isError = false) {
   const el = document.getElementById('syncStatus');
-  if (el) {
-    el.textContent = text;
-    el.style.background = busy ? '#fff3cd' : '#eaf4ee';
-    el.style.color = busy ? '#856404' : '#176b50';
+  if (!el) return;
+  el.textContent = text;
+  el.style.background = isError ? '#fdecea' : '#e8f4ed';
+  el.style.color = isError ? '#c0392b' : '#23744f';
+}
+
+function ensureDBStructure() {
+  if (!db.categories) db.categories = ['أدوية','عناية بطفل','عناية بالأم','تجميل','أدوات طبية'];
+  if (!db.categoryImages) db.categoryImages = {};
+  if (!db.subcategories) db.subcategories = {};
+  if (!db.bankAccounts) db.bankAccounts = [];
+  if (!db.products) db.products = [];
+  if (!db.banners) db.banners = [];
+  if (!db.customers) db.customers = [];
+  if (!db.orders) db.orders = [];
+  if (!db.settings) {
+    db.settings = {
+      brand: 'صيدلية المنورة',
+      subBrand: 'صيدليه المنورة للادوية و المستلزمات الطبيه',
+      logo: '',
+      bgColor: '#f3f7fb',
+      address: 'المكلا - الديس - خلف ملعب بارادم',
+      phone: '778358110'
+    };
   }
 }
 
@@ -91,10 +261,11 @@ async function fetchCloudDB() {
     throw new Error('خطأ من السيرفر (' + res.status + '): ' + errText.slice(0, 100));
   }
   db = await res.json();
+  ensureDBStructure();
 }
 
 async function saveCloudDB(newPassword = null) {
-  setSync('جاري الحفظ في السحابة...', true);
+  setSync('⏳ جاري الحفظ في السحابة...');
   const payload = {
     ...db,
     adminPassword: newPassword || db.adminPassword,
@@ -107,7 +278,7 @@ async function saveCloudDB(newPassword = null) {
   });
   const data = await res.json();
   if (!res.ok) {
-    setSync('فشل الحفظ!', true);
+    setSync('✕ فشل الحفظ!', true);
     throw new Error(data.error || 'فشل الحفظ');
   }
   if (newPassword) {
@@ -115,26 +286,40 @@ async function saveCloudDB(newPassword = null) {
     currentAuthPass = newPassword;
     sessionStorage.setItem('manoraAdminPass', newPassword);
   }
-  setSync('تم الحفظ في السحابة ✓');
+  setSync('✓ محفوظ ومتزامن مع السحابة');
 }
 
-async function uploadImageToBlob(input) {
-  const f = input.files[0];
-  if (!f) return '';
-  if (f.size > 4 * 1024 * 1024) throw new Error('حجم الصورة يجب أن يكون أقل من 4 ميجابايت');
-  
-  setSync('جاري رفع الصورة...', true);
-  const base64 = await new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(r.result);
-    r.onerror = reject;
-    r.readAsDataURL(f);
+function compressImage(file, maxSide = 700, quality = 0.78) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/webp', quality));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
   });
+}
 
+async function uploadImageToBlob(input, maxSide = 700) {
+  const f = input.files ? input.files[0] : input;
+  if (!f) return '';
+  if (f.size > 5 * 1024 * 1024) throw new Error('حجم الصورة كبير جداً');
+  setSync('⏳ جاري ضغط ورفع الصورة...');
+  const base64 = await compressImage(f, maxSide, 0.78);
   const res = await fetch('/api/db', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'uploadImage', payload: { base64, filename: f.name } })
+    body: JSON.stringify({ action: 'uploadImage', payload: { base64, filename: f.name.replace(/\.[^.]+$/, '.webp') } })
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'فشل رفع الصورة');
@@ -142,11 +327,10 @@ async function uploadImageToBlob(input) {
 }
 
 async function checkAdmin() {
-  const inputPass = document.getElementById('adminPass').value;
+  const inputPass = document.getElementById('adminPass').value.trim();
   if (!inputPass) return alert('أدخل كلمة المرور');
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'جاري التحقق...';
-  
   try {
     await fetchCloudDB();
     if (inputPass !== db.adminPassword) {
@@ -163,16 +347,16 @@ async function checkAdmin() {
 }
 
 function showDashboard() {
-  document.getElementById('loginBox').classList.add('hidden');
-  document.getElementById('adminDashboard').classList.remove('hidden');
-  adminSection(activeTab);
+  document.getElementById('loginBox').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  renderAllAdmin();
 }
 
 async function refreshData() {
-  setSync('جاري التحديث...', true);
+  setSync('⏳ جاري التحديث...');
   await fetchCloudDB();
-  adminSection(activeTab);
-  setSync('متصل بالسحابة ✓');
+  renderAllAdmin();
+  setSync('✓ تم التحديث من السحابة');
 }
 
 function adminLogout() {
@@ -184,294 +368,482 @@ function adminLogout() {
   if (currentAuthPass) {
     try {
       await fetchCloudDB();
-      if (currentAuthPass === db.adminPassword) {
-        showDashboard();
-      } else {
-        sessionStorage.removeItem('manoraAdminPass');
-      }
+      if (currentAuthPass === db.adminPassword) showDashboard();
+      else sessionStorage.removeItem('manoraAdminPass');
     } catch (e) { console.error(e); }
   }
 })();
 
-function esc(s='') { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function jsArg(s) { return JSON.stringify(String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-function imageSrc(src) { return src || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180"><rect width="100%" height="100%" fill="#f0f5f1"/><text x="50%" y="50%" text-anchor="middle" fill="#8a9a8e" font-size="18">صورة</text></svg>'); }
+function esc(s = '') { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function imageSrc(src) { return src || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="100%" height="100%" fill="#eef3f8"/><text x="50%" y="54%" text-anchor="middle" fill="#7a8ba0" font-size="28">💊</text></svg>'); }
 
-function adminSection(tab) {
-  activeTab = tab;
-  document.querySelectorAll('#adminTabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  let el = document.getElementById('adminContent');
-  if(!el || !db) return;
+function renderAllAdmin() {
+  if (!db) return;
+  const s = db.settings;
+  document.getElementById('adminHeaderTitle').textContent = 'لوحة تحكم ' + (s.brand || 'صيدلية المنورة');
+  document.getElementById('adminBrand').value = s.brand || 'صيدلية المنورة';
+  document.getElementById('adminSubBrand').value = s.subBrand || 'صيدليه المنورة للادوية و المستلزمات الطبيه';
+  document.getElementById('adminBgColor').value = s.bgColor || '#f3f7fb';
+  document.getElementById('adminAddress').value = s.address || 'المكلا - الديس - خلف ملعب بارادم';
+  document.getElementById('adminPhone').value = s.phone || '778358110';
 
-  if(tab === 'products') {
-    el.innerHTML = `
-      <h3>إضافة / تعديل منتج</h3>
-      <input id="pId" type="hidden">
-      <label>اسم المنتج</label><input id="pName">
-      <label>القسم</label><select id="pCategory">${db.categories.map(c=>`<option>${esc(c)}</option>`).join('')}</select>
-      <label>السعر</label><input id="pPrice" type="number" min="0">
-      <label>صورة المنتج</label><input id="pImageFile" type="file" accept="image/*">
-      <label>أو رابط الصورة</label><input id="pImageUrl">
-      <label><input id="pHome" type="checkbox" style="width:auto"> عرض المنتج في الرئيسية</label>
-      <button id="saveProdBtn" class="green" onclick="saveProduct()">حفظ المنتج</button>
-      <hr>
-      ${db.products.map(p=>`<div class="admin-list row"><img src="${imageSrc(p.image)}"><div><b>${esc(p.name)}</b><p>${esc(p.price)} ريال ${p.home?' · الرئيسية':''}</p></div><button class="secondary" onclick="editProduct('${p.id}')">تعديل</button><button class="danger" onclick="deleteProduct('${p.id}')">حذف</button></div>`).join('')}
-    `;
+  const logoBox = document.getElementById('logoPreviewBox');
+  if (s.logo) {
+    document.getElementById('logoPreviewImg').src = s.logo;
+    logoBox.style.display = 'flex';
+  } else {
+    logoBox.style.display = 'none';
   }
 
-  if(tab === 'categories') {
-    el.innerHTML = `
-      <h3>إدارة الأقسام</h3>
-      <label>اسم القسم الجديد</label><input id="catNew" placeholder="اسم القسم">
-      <label>صورة القسم (مطلوبة عند الإضافة)</label><input id="catImageFile" type="file" accept="image/*" required>
-      <button id="addCatBtn" class="green" onclick="addCategory()">إضافة قسم مع صورة</button>
-      ${db.categories.map(c=>`<div class="admin-list row"><img src="${imageSrc(db.categoryImages[c])}" alt="صورة القسم"><b>${esc(c)}</b><button class="secondary" onclick="changeCategoryImage(${jsArg(c)})">تغيير الصورة</button><button class="secondary" onclick="renameCategory(${jsArg(c)})">تعديل الاسم</button><button class="danger" onclick="deleteCategory(${jsArg(c)})">حذف</button></div>`).join('')}
-    `;
-  }
+  populateProductCategories();
+  renderAdminProducts();
+  renderAdminCategories();
+  populateSubcatParentSelect();
+  renderAdminSubcategories();
+  renderAdminBanners();
+  renderAdminBanks();
+  renderAdminOrders();
+  renderAdminCustomers();
+}
 
-  if(tab === 'banners') {
-    el.innerHTML = `
-      <h3>إعلانات متحركة (حتى 3 صور)</h3>
-      <label>صورة الإعلان</label><input id="bannerFile" type="file" accept="image/*">
-      <label>أو رابط الصورة</label><input id="bannerUrl">
-      <button id="addBannerBtn" class="green" onclick="addBanner()">إضافة إعلان</button>
-      ${db.banners.map((b,i)=>`<div class="admin-list row"><img src="${imageSrc(b.image)}"><b>الإعلان ${i+1}</b><button class="danger" onclick="deleteBanner(${i})">حذف</button></div>`).join('')}
-    `;
-  }
+// 1. الإعدادات والمظهر
+function pickBgColor(hex) { document.getElementById('adminBgColor').value = hex; }
 
-  if(tab === 'customers') {
-    el.innerHTML = `<h3>بيانات العملاء (${db.customers.length})</h3>` + 
-      (db.customers.map(c=>`
-        <div class="admin-list row">
-          <div style="flex:3">
-            <b>${esc(c.name)}</b>
-            <p style="margin:4px 0">جوال: ${esc(c.phone)} · اسم المستخدم: <b>${esc(c.username)}</b></p>
-            <small style="color:#777">تاريخ التسجيل: ${esc(c.created||'')}</small>
-          </div>
-          <button class="danger" style="flex:0 0 auto" onclick="deleteCustomer(${jsArg(c.username)})">حذف العميل</button>
-        </div>
-      `).join('') || 'لا يوجد عملاء');
-  }
+async function removeLogo() {
+  if (!confirm('حذف شعار الصيدلية؟')) return;
+  db.settings.logo = '';
+  try {
+    await saveCloudDB();
+    document.getElementById('logoPreviewBox').style.display = 'none';
+    alert('تم حذف الشعار');
+  } catch (e) { alert(e.message); }
+}
 
-  if(tab === 'orders') {
-    el.innerHTML = `<h3>الطلبات (${db.orders.length})</h3>` + 
-      (db.orders.slice().reverse().map(o=>`
-        <div class="admin-list">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-            <b>${esc(o.id)} — ${esc(o.customerName)}</b>
-            <button class="danger" style="padding:6px 12px;font-size:12px" onclick="deleteOrder(${jsArg(o.id)})">حذف الطلب</button>
-          </div>
-          <p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)}</p>
-          ${o.deposit && o.deposit.startsWith('http') 
-            ? `<div class="receipt-box">
-                 <div style="font-size:12px;margin-bottom:4px;color:#176b50;font-weight:bold">صورة سند الإيداع (اضغط للتكبير):</div>
-                 <a href="${esc(o.deposit)}" target="_blank"><img src="${esc(o.deposit)}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid #ccc"></a>
-               </div>`
-            : `<p>سند الإيداع: ${esc(o.deposit || 'غير مرفق')}</p>`
-          }
-          <p><b>المنتجات:</b> ${o.items.map(i=>esc(i.name)+' × '+i.qty).join('، ')}</p>
-          <div class="row">
-            <span class="status">${esc(o.status)}</span>
-            <select id="status-${o.id}">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>
-            <button class="green" onclick="updateOrder('${o.id}')">تحديث الحالة</button>
-          </div>
-        </div>
-      `).join('') || 'لا توجد طلبات');
-  }
+async function saveSettings() {
+  const btn = document.getElementById('saveSettingsBtn');
+  btn.disabled = true;
+  try {
+    let logoUrl = db.settings.logo || '';
+    const logoFile = document.getElementById('adminLogoFile').files[0];
+    if (logoFile) logoUrl = await uploadImageToBlob(logoFile, 256);
 
-  if(tab === 'password') {
-    el.innerHTML = `
-      <h3>تغيير كلمة مرور لوحة التحكم</h3>
-      <label>كلمة المرور الحالية</label>
-      <input id="oldAdminPass" type="password" placeholder="أدخل كلمة المرور الحالية">
-      <label>كلمة المرور الجديدة</label>
-      <input id="newAdminPass" type="password" placeholder="أدخل كلمة المرور الجديدة">
-      <label>تأكيد كلمة المرور الجديدة</label>
-      <input id="confirmAdminPass" type="password" placeholder="أعد إدخال كلمة المرور الجديدة">
-      <button id="savePassBtn" class="green" onclick="changeAdminPassword()">حفظ كلمة المرور في السحابة</button>
-    `;
+    db.settings = {
+      brand: document.getElementById('adminBrand').value.trim() || 'صيدلية المنورة',
+      subBrand: document.getElementById('adminSubBrand').value.trim() || 'صيدليه المنورة للادوية و المستلزمات الطبيه',
+      logo: logoUrl,
+      bgColor: document.getElementById('adminBgColor').value || '#f3f7fb',
+      address: document.getElementById('adminAddress').value.trim() || 'المكلا - الديس - خلف ملعب بارادم',
+      phone: document.getElementById('adminPhone').value.trim() || '778358110'
+    };
+    await saveCloudDB();
+    document.getElementById('adminLogoFile').value = '';
+    renderAllAdmin();
+    alert('تم حفظ الإعدادات والمظهر في السحابة');
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; }
+}
+
+// 2. المنتجات
+function populateProductCategories(selectedCat, selectedSub) {
+  const sel = document.getElementById('pCategory');
+  if (!sel) return;
+  sel.innerHTML = db.categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  if (selectedCat && db.categories.includes(selectedCat)) sel.value = selectedCat;
+  populateProductSubcategories(selectedSub);
+}
+
+function populateProductSubcategories(selectedSub) {
+  const cat = document.getElementById('pCategory').value;
+  const subSel = document.getElementById('pSubcategory');
+  if (!subSel) return;
+  const list = db.subcategories[cat] || [];
+  subSel.innerHTML = '<option value="">-- بدون قسم فرعي --</option>' + list.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+  if (selectedSub) subSel.value = selectedSub;
+}
+
+async function saveProduct() {
+  const btn = document.getElementById('saveProdBtn');
+  try {
+    const id = document.getElementById('pId').value;
+    const name = document.getElementById('pName').value.trim();
+    const desc = document.getElementById('pDesc').value.trim();
+    const category = document.getElementById('pCategory').value;
+    const subcategory = document.getElementById('pSubcategory').value || '';
+    const price = document.getElementById('pPrice').value;
+    if (!name || price === '') return alert('أدخل اسم المنتج والسعر');
+
+    btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+    let image = await uploadImageToBlob(document.getElementById('pImageFile'), 640);
+    image = image || document.getElementById('pImageUrl').value.trim() || (id ? db.products.find(p => p.id === id)?.image : '');
+
+    const obj = { id: id || crypto.randomUUID(), name, desc, category, subcategory, price: Number(price), image, home: document.getElementById('pHome').checked };
+    const idx = db.products.findIndex(p => p.id === obj.id);
+    if (idx >= 0) db.products[idx] = obj;
+    else db.products.push(obj);
+
+    await saveCloudDB();
+    clearProductForm();
+    renderAdminProducts();
+    alert('تم حفظ المنتج');
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; btn.textContent = 'حفظ المنتج'; }
+}
+
+function clearProductForm() {
+  document.getElementById('pId').value = '';
+  document.getElementById('pName').value = '';
+  document.getElementById('pDesc').value = '';
+  document.getElementById('pPrice').value = '';
+  document.getElementById('pImageFile').value = '';
+  document.getElementById('pImageUrl').value = '';
+  document.getElementById('pHome').checked = false;
+  populateProductCategories();
+}
+
+function editProduct(id) {
+  const p = db.products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('pId').value = p.id;
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pDesc').value = p.desc || '';
+  document.getElementById('pPrice').value = p.price;
+  populateProductCategories(p.category, p.subcategory || '');
+  document.getElementById('pHome').checked = !!p.home;
+  document.getElementById('pImageUrl').value = p.image || '';
+  document.getElementById('productSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteProduct(id) {
+  if (!confirm('حذف المنتج؟')) return;
+  db.products = db.products.filter(p => p.id !== id);
+  await saveCloudDB();
+  renderAdminProducts();
+}
+
+function renderAdminProducts() {
+  const box = document.getElementById('adminProducts');
+  box.innerHTML = db.products.length ? '' : '<p style="color:#666">لا توجد منتجات مضافة.</p>';
+  db.products.forEach(p => {
+    const row = document.createElement('div'); row.className = 'adminrow';
+    const path = p.category + (p.subcategory ? ' ← ' + p.subcategory : '');
+    row.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><img src="${imageSrc(p.image)}" style="width:52px;height:52px;object-fit:cover;border-radius:10px"><div><b>${esc(p.name)}</b><div style="font-size:13px;color:#555">${esc(p.price)} ريال (${esc(path)}) ${p.home ? '★ الرئيسية' : ''}</div></div></div>`;
+    const actions = document.createElement('div');
+    const e = document.createElement('button'); e.textContent = 'تعديل'; e.onclick = () => editProduct(p.id);
+    const d = document.createElement('button'); d.textContent = 'حذف'; d.className = 'danger'; d.onclick = () => deleteProduct(p.id);
+    actions.append(e, d); row.append(actions); box.append(row);
+  });
+}
+
+// 3. الأقسام الرئيسية والفرعية
+async function addCategory() {
+  const c = document.getElementById('catNew').value.trim();
+  if (!c) return alert('أدخل اسم القسم');
+  if (db.categories.includes(c)) return alert('القسم موجود');
+  const btn = document.getElementById('addCatBtn');
+  try {
+    btn.disabled = true; btn.textContent = 'جاري الرفع...';
+    const image = await uploadImageToBlob(document.getElementById('catImageFile'), 500);
+    if (!image) return alert('يرجى اختيار صورة للقسم الجديد');
+    db.categories.push(c);
+    db.categoryImages[c] = image;
+    await saveCloudDB();
+    document.getElementById('catNew').value = '';
+    document.getElementById('catImageFile').value = '';
+    renderAllAdmin();
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; btn.textContent = '+ إضافة قسم رئيسي'; }
+}
+
+function openEditMainCategory(oldName) {
+  editingMainCatOldName = oldName;
+  document.getElementById('editMainCatName').value = oldName;
+  document.getElementById('editMainCatImage').value = '';
+  const box = document.getElementById('editMainCatBox');
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEditMainCategory() {
+  editingMainCatOldName = null;
+  document.getElementById('editMainCatBox').style.display = 'none';
+}
+
+async function saveEditedMainCategory() {
+  const oldName = editingMainCatOldName;
+  if (!oldName) return;
+  const newName = document.getElementById('editMainCatName').value.trim();
+  if (!newName) return alert('أدخل اسم القسم');
+  if (newName !== oldName && db.categories.includes(newName)) return alert('يوجد قسم بهذا الاسم');
+
+  const btn = document.getElementById('saveEditMainCatBtn');
+  btn.disabled = true;
+  try {
+    let image = db.categoryImages[oldName];
+    const file = document.getElementById('editMainCatImage').files[0];
+    if (file) image = await uploadImageToBlob(file, 500);
+
+    db.categories = db.categories.map(c => c === oldName ? newName : c);
+    if (image) db.categoryImages[newName] = image;
+    if (newName !== oldName) {
+      delete db.categoryImages[oldName];
+      if (db.subcategories[oldName]) { db.subcategories[newName] = db.subcategories[oldName]; delete db.subcategories[oldName]; }
+    }
+    db.products.forEach(p => { if (p.category === oldName) p.category = newName; });
+    await saveCloudDB();
+    cancelEditMainCategory();
+    renderAllAdmin();
+    alert('تم تحديث القسم الرئيسي');
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; }
+}
+
+async function deleteCategory(c) {
+  if (!confirm('حذف القسم الرئيسي وأقسامه الفرعية؟')) return;
+  db.categories = db.categories.filter(x => x !== c);
+  delete db.categoryImages[c];
+  delete db.subcategories[c];
+  db.products.forEach(p => { if (p.category === c) { p.category = ''; p.subcategory = ''; } });
+  await saveCloudDB();
+  renderAllAdmin();
+}
+
+function renderAdminCategories() {
+  const box = document.getElementById('adminCategories');
+  box.innerHTML = '';
+  db.categories.forEach(c => {
+    const row = document.createElement('div'); row.className = 'adminrow';
+    const subCount = (db.subcategories[c] || []).length;
+    row.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><img class="category-admin-preview" src="${imageSrc(db.categoryImages[c])}"><b>${esc(c)} (${subCount} فرعي)</b></div>`;
+    const actions = document.createElement('div');
+    const e = document.createElement('button'); e.textContent = 'تعديل الاسم / الصورة'; e.onclick = () => openEditMainCategory(c);
+    const d = document.createElement('button'); d.textContent = 'حذف'; d.className = 'danger'; d.onclick = () => deleteCategory(c);
+    actions.append(e, d); row.append(actions); box.append(row);
+  });
+}
+
+function populateSubcatParentSelect(selected) {
+  const sel = document.getElementById('subcatParentSelect');
+  if (!sel) return;
+  const prev = selected || sel.value;
+  sel.innerHTML = db.categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  if (prev && db.categories.includes(prev)) sel.value = prev;
+}
+
+async function addSubcategory() {
+  const parent = document.getElementById('subcatParentSelect').value;
+  const name = document.getElementById('newSubcategory').value.trim();
+  const file = document.getElementById('newSubcategoryImage').files[0];
+  if (!parent || !name) return alert('اختر القسم الرئيسي وأدخل اسم القسم الفرعي');
+  if (!db.subcategories[parent]) db.subcategories[parent] = [];
+  if (db.subcategories[parent].some(s => s.name === name)) return alert('القسم الفرعي موجود بالفعل');
+
+  const btn = document.getElementById('addSubcatBtn');
+  btn.disabled = true;
+  try {
+    let image = '';
+    if (file) image = await uploadImageToBlob(file, 400);
+    db.subcategories[parent].push({ name, image });
+    await saveCloudDB();
+    document.getElementById('newSubcategory').value = '';
+    document.getElementById('newSubcategoryImage').value = '';
+    renderAllAdmin();
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; }
+}
+
+function renderAdminSubcategories() {
+  const parent = document.getElementById('subcatParentSelect').value;
+  const box = document.getElementById('adminSubcategories');
+  box.innerHTML = '';
+  const list = db.subcategories[parent] || [];
+  if (!list.length) { box.innerHTML = `<p style="color:#666">لا توجد أقسام فرعية داخل "${esc(parent)}" بعد.</p>`; return; }
+  list.forEach((s, idx) => {
+    const row = document.createElement('div'); row.className = 'adminrow';
+    row.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><img class="category-admin-preview" src="${imageSrc(s.image)}"><b>${esc(s.name)}</b></div>`;
+    const actions = document.createElement('div');
+    const e = document.createElement('button'); e.textContent = 'تعديل'; e.onclick = () => editSubcategory(parent, idx);
+    const d = document.createElement('button'); d.textContent = 'حذف'; d.className = 'danger'; d.onclick = () => deleteSubcategory(parent, idx);
+    actions.append(e, d); row.append(actions); box.append(row);
+  });
+}
+
+async function editSubcategory(parent, idx) {
+  const item = db.subcategories[parent][idx];
+  const newName = prompt('اسم القسم الفرعي:', item.name);
+  if (newName === null || !newName.trim()) return;
+  const name = newName.trim();
+  let image = item.image;
+  if (confirm('هل تريد تغيير صورة القسم الفرعي؟')) {
+    const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
+    const selected = await new Promise(r => { input.onchange = () => r(input.files[0] || null); input.click(); });
+    if (selected) image = await uploadImageToBlob(selected, 400);
+  }
+  const oldSub = item.name;
+  db.subcategories[parent][idx] = { name, image };
+  db.products.forEach(p => { if (p.category === parent && p.subcategory === oldSub) p.subcategory = name; });
+  await saveCloudDB();
+  renderAllAdmin();
+}
+
+async function deleteSubcategory(parent, idx) {
+  if (!confirm('حذف هذا القسم الفرعي؟')) return;
+  db.subcategories[parent].splice(idx, 1);
+  await saveCloudDB();
+  renderAllAdmin();
+}
+
+// 4. الإعلانات
+async function addBanner() {
+  if (db.banners.length >= 4) return alert('الحد الأقصى 4 إعلانات');
+  const btn = document.getElementById('addBannerBtn');
+  try {
+    btn.disabled = true; btn.textContent = 'جاري الرفع...';
+    let image = await uploadImageToBlob(document.getElementById('bannerFile'), 1200);
+    image = image || document.getElementById('bannerUrl').value.trim();
+    const title = document.getElementById('bannerTitle').value.trim();
+    if (!image) return alert('اختر صورة أو أدخل رابطها');
+    db.banners.push({ image, title });
+    await saveCloudDB();
+    document.getElementById('bannerFile').value = '';
+    document.getElementById('bannerTitle').value = '';
+    document.getElementById('bannerUrl').value = '';
+    renderAdminBanners();
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; btn.textContent = 'إضافة إعلان'; }
+}
+
+async function deleteBanner(i) {
+  db.banners.splice(i, 1);
+  await saveCloudDB();
+  renderAdminBanners();
+}
+
+function renderAdminBanners() {
+  const box = document.getElementById('adminBanners');
+  box.innerHTML = db.banners.length ? '' : '<p style="color:#666">لا توجد إعلانات.</p>';
+  db.banners.forEach((b, i) => {
+    const row = document.createElement('div'); row.className = 'banner-admin-card';
+    row.innerHTML = `<img src="${imageSrc(b.image)}"><span>${esc(b.title || 'إعلان ' + (i + 1))}</span><button class="danger" onclick="deleteBanner(${i})">حذف</button>`;
+    box.append(row);
+  });
+}
+
+// 5. الحسابات البنكية
+async function addBankAccount() {
+  const bank = document.getElementById('bankName').value.trim();
+  const holder = document.getElementById('bankAccountName').value.trim();
+  const number = document.getElementById('bankAccountNumber').value.trim();
+  if (!bank || !holder || !number) return alert('أكمل جميع بيانات الحساب البنكي');
+  const btn = document.getElementById('addBankBtn');
+  btn.disabled = true;
+  try {
+    db.bankAccounts.push({ id: crypto.randomUUID(), bank, holder, number });
+    await saveCloudDB();
+    document.getElementById('bankName').value = '';
+    document.getElementById('bankAccountName').value = '';
+    document.getElementById('bankAccountNumber').value = '';
+    renderAdminBanks();
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; }
+}
+
+async function deleteBankAccount(id) {
+  if (!confirm('حذف الحساب البنكي؟')) return;
+  db.bankAccounts = db.bankAccounts.filter(b => b.id !== id);
+  await saveCloudDB();
+  renderAdminBanks();
+}
+
+function renderAdminBanks() {
+  const box = document.getElementById('adminBanks');
+  box.innerHTML = db.bankAccounts.length ? '' : '<p style="color:#666">لا توجد حسابات بنكية مضافة.</p>';
+  db.bankAccounts.forEach(b => {
+    const row = document.createElement('div'); row.className = 'adminrow';
+    row.innerHTML = `<span><b>${esc(b.bank)}</b> — ${esc(b.holder)} — <span dir="ltr">${esc(b.number)}</span></span><button class="danger" onclick="deleteBankAccount('${b.id}')">حذف</button>`;
+    box.append(row);
+  });
+}
+
+// 6. الطلبات والعملاء وكلمة المرور
+function renderAdminOrders() {
+  const box = document.getElementById('adminOrders');
+  box.innerHTML = db.orders.length ? '' : '<p style="color:#666">لا توجد طلبات.</p>';
+  db.orders.slice().reverse().forEach(o => {
+    const total = o.total || (o.items || []).reduce((s, i) => s + (Number(i.price || 0) * Number(i.qty || 1)), 0);
+    const card = document.createElement('div'); card.className = 'ordercard';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <b>${esc(o.id)} — ${esc(o.customerName)}</b>
+        <span style="background:#e8f4ed;color:#18865a;padding:4px 10px;border-radius:10px;font-weight:bold">الإجمالي: ${Number(total).toLocaleString()} ريال</span>
+      </div>
+      <p>جوال: ${esc(o.phone)} | الموقع: ${esc(o.location)}</p>
+      <p><b>المنتجات:</b> ${(o.items || []).map(i => esc(i.name) + ' × ' + i.qty).join('، ')}</p>
+      ${o.deposit && o.deposit.startsWith('http') ? `<a href="${esc(o.deposit)}" target="_blank"><img class="proof" src="${esc(o.deposit)}" alt="سند الإيداع"></a>` : `<p>السند: ${esc(o.deposit || 'غير مرفق')}</p>`}
+      <div class="stages">${statuses.map((s, idx) => `<span class="stage ${idx <= statuses.indexOf(o.status) ? 'done' : ''}">${esc(s)}</span>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <select id="status-${o.id}" style="flex:1;min-width:150px">${statuses.map(s => `<option ${s === o.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+        <button class="primary" onclick="updateOrder('${o.id}')">تحديث الحالة</button>
+        <button class="danger" onclick="deleteOrder('${o.id}')">حذف الطلب</button>
+      </div>`;
+    box.append(card);
+  });
+}
+
+async function updateOrder(id) {
+  const o = db.orders.find(x => x.id === id);
+  const s = document.getElementById('status-' + id).value;
+  if (o) {
+    o.status = s;
+    if (!o.history) o.history = [];
+    o.history.push(s);
+    await saveCloudDB();
+    renderAdminOrders();
+    alert('تم تحديث حالة الطلب');
   }
 }
 
 async function deleteOrder(id) {
-  if(!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
-  try {
-    db.orders = db.orders.filter(o => o.id !== id);
-    await saveCloudDB();
-    adminSection('orders');
-    alert('تم حذف الطلب بنجاح');
-  } catch(e) {
-    alert(e.message);
-  }
+  if (!confirm('حذف هذا الطلب نهائياً؟')) return;
+  db.orders = db.orders.filter(o => o.id !== id);
+  await saveCloudDB();
+  renderAdminOrders();
 }
 
-async function deleteCustomer(username) {
-  if(!confirm('هل أنت متأكد من حذف حساب هذا العميل نهائياً؟')) return;
-  try {
-    db.customers = db.customers.filter(c => c.username !== username);
-    await saveCloudDB();
-    adminSection('customers');
-    alert('تم حذف العميل من السحابة بنجاح');
-  } catch(e) {
-    alert(e.message);
-  }
+function renderAdminCustomers() {
+  const box = document.getElementById('adminCustomers');
+  box.innerHTML = db.customers.length ? '' : '<p style="color:#666">لا يوجد عملاء.</p>';
+  db.customers.forEach(c => {
+    const row = document.createElement('div'); row.className = 'adminrow';
+    row.innerHTML = `<span><b>${esc(c.name)}</b> | ${esc(c.phone)} | <b>${esc(c.username)}</b></span>`;
+    const del = document.createElement('button'); del.className = 'danger'; del.textContent = 'حذف';
+    del.onclick = async () => {
+      if (!confirm('حذف العميل؟')) return;
+      db.customers = db.customers.filter(x => x.username !== c.username);
+      await saveCloudDB();
+      renderAdminCustomers();
+    };
+    row.append(del); box.append(row);
+  });
 }
 
 async function changeAdminPassword() {
   const oldP = document.getElementById('oldAdminPass').value;
   const newP = document.getElementById('newAdminPass').value.trim();
   const confP = document.getElementById('confirmAdminPass').value.trim();
-
-  if(oldP !== db.adminPassword) return alert('كلمة المرور الحالية غير صحيحة');
-  if(!newP || newP.length < 4) return alert('يرجى إدخال كلمة مرور جديدة لا تقل عن 4 أحرف');
-  if(newP !== confP) return alert('كلمة المرور الجديدة وتأكيدها غير متطابقين');
+  if (oldP !== db.adminPassword) return alert('كلمة المرور الحالية غير صحيحة');
+  if (!newP || newP.length < 4) return alert('يرجى إدخال كلمة مرور جديدة لا تقل عن 4 أحرف');
+  if (newP !== confP) return alert('كلمة المرور الجديدة وتأكيدها غير متطابقين');
 
   const btn = document.getElementById('savePassBtn');
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
   try {
     await saveCloudDB(newP);
+    document.getElementById('oldAdminPass').value = '';
+    document.getElementById('newAdminPass').value = '';
+    document.getElementById('confirmAdminPass').value = '';
     alert('تم تغيير كلمة المرور وحفظها في السحابة بنجاح');
-    adminSection('password');
-  } catch(e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = 'حفظ كلمة المرور في السحابة';
-  }
-}
-
-async function saveProduct() {
-  const btn = document.getElementById('saveProdBtn');
-  try {
-    let id = document.getElementById('pId').value;
-    let name = document.getElementById('pName').value.trim();
-    let category = document.getElementById('pCategory').value;
-    let price = document.getElementById('pPrice').value;
-    if(!name || price === '') return alert('أدخل اسم المنتج والسعر');
-    
-    btn.disabled = true; btn.textContent = 'جاري الحفظ...';
-    let image = await uploadImageToBlob(document.getElementById('pImageFile'));
-    image = image || document.getElementById('pImageUrl').value.trim() || (id ? db.products.find(p=>p.id===id)?.image : '');
-    
-    let obj = {id: id || crypto.randomUUID(), name, category, price: Number(price), image, home: document.getElementById('pHome').checked};
-    let idx = db.products.findIndex(p => p.id === obj.id);
-    if(idx >= 0) db.products[idx] = obj;
-    else db.products.push(obj);
-    
-    await saveCloudDB();
-    adminSection('products');
-    alert('تم حفظ المنتج');
-  } catch(e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = 'حفظ المنتج';
-  }
-}
-
-function editProduct(id) {
-  let p = db.products.find(x => x.id === id);
-  adminSection('products');
-  document.getElementById('pId').value = p.id;
-  document.getElementById('pName').value = p.name;
-  document.getElementById('pCategory').value = p.category;
-  document.getElementById('pPrice').value = p.price;
-  document.getElementById('pHome').checked = p.home;
-  document.getElementById('pImageUrl').value = p.image || '';
-}
-
-async function deleteProduct(id) {
-  if(confirm('حذف المنتج؟')) {
-    db.products = db.products.filter(p => p.id !== id);
-    await saveCloudDB();
-    adminSection('products');
-  }
-}
-
-async function addCategory() {
-  let c = document.getElementById('catNew').value.trim();
-  if(!c) return alert('أدخل اسم القسم');
-  if(db.categories.includes(c)) return alert('القسم موجود');
-  const btn = document.getElementById('addCatBtn');
-  try {
-    btn.disabled = true; btn.textContent = 'جاري الرفع...';
-    let image = await uploadImageToBlob(document.getElementById('catImageFile'));
-    if(!image) { btn.disabled = false; btn.textContent = 'إضافة قسم مع صورة'; return alert('يرجى اختيار صورة للقسم الجديد'); }
-    db.categories.push(c);
-    db.categoryImages[c] = image;
-    await saveCloudDB();
-    adminSection('categories');
-  } catch(e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = 'إضافة قسم مع صورة';
-  }
-}
-
-async function changeCategoryImage(c) {
-  let input = document.createElement('input');
-  input.type = 'file'; input.accept = 'image/*';
-  input.onchange = async () => {
-    try {
-      let image = await uploadImageToBlob(input);
-      if(!image) return;
-      db.categoryImages[c] = image;
-      await saveCloudDB();
-      adminSection('categories');
-    } catch(e) { alert(e.message); }
-  };
-  input.click();
-}
-
-async function renameCategory(old) {
-  let n = prompt('اسم القسم الجديد', old);
-  if(!n || !n.trim()) return;
-  n = n.trim();
-  db.categories = db.categories.map(c => c === old ? n : c);
-  db.categoryImages[n] = db.categoryImages[old];
-  delete db.categoryImages[old];
-  db.products.forEach(p => { if(p.category === old) p.category = n; });
-  await saveCloudDB();
-  adminSection('categories');
-}
-
-async function deleteCategory(c) {
-  if(!confirm('حذف القسم؟')) return;
-  db.categories = db.categories.filter(x => x !== c);
-  delete db.categoryImages[c];
-  db.products.forEach(p => { if(p.category === c) p.category = ''; });
-  await saveCloudDB();
-  adminSection('categories');
-}
-
-async function addBanner() {
-  if(db.banners.length >= 3) return alert('الحد الأقصى 3 إعلانات');
-  const btn = document.getElementById('addBannerBtn');
-  try {
-    btn.disabled = true; btn.textContent = 'جاري الرفع...';
-    let image = await uploadImageToBlob(document.getElementById('bannerFile'));
-    image = image || document.getElementById('bannerUrl').value.trim();
-    if(!image) { btn.disabled = false; btn.textContent = 'إضافة إعلان'; return alert('اختر صورة أو أدخل رابطها'); }
-    db.banners.push({image});
-    await saveCloudDB();
-    adminSection('banners');
-  } catch(e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = 'إضافة إعلان';
-  }
-}
-
-async function deleteBanner(i) {
-  db.banners.splice(i, 1);
-  await saveCloudDB();
-  adminSection('banners');
-}
-
-async function updateOrder(id) {
-  let o = db.orders.find(x => x.id === id);
-  let s = document.getElementById('status-' + id).value;
-  if(o) {
-    o.status = s;
-    o.history.push(s);
-    await saveCloudDB();
-    adminSection('orders');
-    alert('تم تحديث حالة الطلب');
-  }
+  } catch (e) { alert(e.message); }
+  finally { btn.disabled = false; btn.textContent = 'حفظ كلمة المرور في السحابة'; }
 }
 </script>
 </body>
